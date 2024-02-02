@@ -13,7 +13,8 @@ here: https://wails.io/docs/reference/project-config
 . bin/activate-hermit
 go install github.com/wailsapp/wails/v2/cmd/wails@latest
 git submodule init
-git submodule update
+git submodule update --remote
+cd frontend/pg-explain && npm i && npm run build-pxl
 ```
 
 ## Live Development

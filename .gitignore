@@ -6,3 +6,4 @@ frontend/dist
 *.o
 *.d
 .hermit
+ggml-metal.metal

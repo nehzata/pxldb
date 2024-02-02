@@ -1,5 +1,9 @@
 package app
 
+// CGO tutorials
+// https://karthikkaranth.me/blog/calling-c-code-from-go/
+// https://eli.thegreenplace.net/2019/passing-callbacks-and-pointers-to-cgo/
+
 // #cgo CXXFLAGS: -g -Wall -std=c++14 -fPIC
 // #cgo CXXFLAGS: -I ../llm/src
 // #cgo CXXFLAGS: -DFMT_HEADER_ONLY -I ../llm/third_party/fmt/include
