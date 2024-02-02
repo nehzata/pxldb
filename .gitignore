@@ -1,0 +1,8 @@
+.DS_Store
+build/bin
+node_modules
+frontend/dist
+*.a
+*.o
+*.d
+.hermit

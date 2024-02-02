@@ -1,0 +1,8 @@
+<svg width='1024' height='1024' viewBox='0 0 1024 1024' fill='black' xmlns='http://www.w3.org/2000/svg'>
+  <path d='M832 0H192C85.9613 0 0 85.9613 0 192V832C0 938.039 85.9613 1024 192 1024H832C938.039 1024 1024 938.039 1024 832V192C1024 85.9613 938.039 0 832 0Z' fill='currentColor'/>
+  <rect x='237' y='237' width='214.634' height='214.634' rx='16' fill='white'/>
+  <rect x='404.683' y='404.683' width='214.634' height='214.634' rx='16' fill='white'/>
+  <rect x='572.366' y='237' width='214.634' height='214.634' rx='16' fill='white'/>
+  <rect x='572.366' y='572.366' width='214.634' height='214.634' rx='16' fill='white'/>
+  <rect x='237' y='572.366' width='214.634' height='214.634' rx='16' fill='white'/>
+</svg>

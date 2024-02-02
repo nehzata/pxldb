@@ -1,0 +1,19 @@
+.cm-editor,
+.cm-scroller {
+  @apply rounded-md;
+}
+
+.cm-editor {
+  max-height: 450px;
+}
+
+.cm-editor.cm-focused {
+  @apply outline !important;
+  @apply outline-[2px] !important;
+  @apply outline-blue-200 !important;
+}
+
+.cm-lineNumbers .cm-gutterElement {
+  @apply pr-2 !important;
+  @apply pl-3 !important;
+}

@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+  @apply bg-canvas;
+  @apply dark:bg-canvas-dark;
+}
+
+button {
+  -webkit-appearance: none;
+  @apply focus:outline-none;
+}
+
+.wails-drag {
+  --wails-draggable: drag;
+}
+
+.wails-nodrag {
+  --wails-draggable: no-drag;
+}
+
+/* .Toastify__close-button {
+  opacity: 1 !important;
+}
+
+.Toastify__toast {
+  @apply text-white !important;
+  @apply bg-black !important;
+}
+
+.Toastify__progress-bar.error {
+  @apply bg-red-400 !important;
+}
+
+.Toastify__progress-bar.info {
+  @apply bg-gray-400 !important;
+}
+
+.Toastify__progress-bar.success {
+  @apply bg-green-400 !important;
+} */

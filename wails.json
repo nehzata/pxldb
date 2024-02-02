@@ -1,0 +1,24 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "PXLDB",
+  "author": {
+    "name": "Ali Nehzat",
+    "email": "ali.nehzat@thanks.dev"
+  },
+  "info": {
+    "companyName": "THANKS DEV PTY LTD",
+    "productName": "PXL DB",
+    "productVersion": "1.0.0",
+    "comments": "Built with love by https://thanks.dev",
+    "copyright": "Copyright 2024"
+  },
+  "outputfilename": "pxldb",
+  "frontend:install": "npm install",
+  "frontend:build": "npm run build",
+  "frontend:dev:watcher": "npm run dev",
+  "frontend:dev:serverUrl": "auto",
+  "reloaddirs": "database/queries,database/schema",
+  "preBuildHooks": {
+    "*/*": "make -C ../.. regen"
+  }
+}
