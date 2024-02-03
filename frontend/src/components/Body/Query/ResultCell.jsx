@@ -42,7 +42,7 @@ const ResultCell = ({v, isStale}) => {
           </button>
           {!isExpanded && isExpandable && (
             <button onClick={() => setIsExpanded(true)}>
-              <Icons.Expand size={14} stroke='currentColor' />
+              <Icons.Expand01 size={14} stroke='currentColor' />
             </button>
           )}
         </div>
