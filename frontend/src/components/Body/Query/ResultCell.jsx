@@ -1,5 +1,5 @@
 import React from 'react';
-import * as Icons from '@pxl/atoms/Icons';
+import * as Icons from 'untitledui-js-base';
 
 import * as QuickCopy from './quick-copy';
 
@@ -38,11 +38,11 @@ const ResultCell = ({v, isStale}) => {
           }
         >
           <button onClick={() => navigator.clipboard.writeText(vVal)}>
-            <Icons.Copy width={14} className='transform -scale-x-100' />
+            <Icons.Copy01 size={14} className='transform -scale-x-100' stroke='currentColor' />
           </button>
           {!isExpanded && isExpandable && (
             <button onClick={() => setIsExpanded(true)}>
-              <Icons.Expand width={14} />
+              <Icons.Expand size={14} stroke='currentColor' />
             </button>
           )}
         </div>

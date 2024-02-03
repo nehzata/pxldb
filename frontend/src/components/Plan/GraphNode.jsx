@@ -1,8 +1,8 @@
 import React from 'react';
+import * as Icons from 'untitledui-js-base';
 
 import * as C from './consts';
 import * as utils from './utils';
-import * as Icons from '@pxl/atoms/Icons';
 
 const GraphNode = ({plan, node, onSize}) => {
   const ref = React.useRef();
@@ -130,28 +130,28 @@ const GraphNode = ({plan, node, onSize}) => {
         <div className='bg-white border border-gray-300 rounded shadow p-1'>
           <div className='flex flex-row justify-between items-center whitespace-nowrap'>
             <div className='flex flex-row justify-start items-center space-x-1 overflow-hidden'>
-              <Icons.ChevronUp width={20} height={20} className='flex-shrink-0 flex-grow-0 text-gray-400' />
+              <Icons.ChevronUp size={20} stroke='currentColor' className='flex-shrink-0 flex-grow-0 text-gray-400' />
               <div className='text-xs font-semibold overflow-hidden text-ellipsis'>{nodeName}</div>
             </div>
             <div className='flex flex-row justify-end items-center space-x-1'>
               {durationClass !== null && (
                 <div className={durationClass}>
-                  <Icons.Clock width={12} height={12} />
+                  <Icons.Clock size={12} stroke='currentColor' />
                 </div>
               )}
               {costClass !== null && (
                 <div className={costClass}>
-                  <Icons.CurrencyDollar width={12} height={12} />
+                  <Icons.CurrencyDollar size={12} stroke='currentColor' />
                 </div>
               )}
               {estimationClass !== null && (
                 <div className={estimationClass}>
-                  <Icons.ThumbsDown width={12} height={12} />
+                  <Icons.ThumbsDown size={12} stroke='currentColor' />
                 </div>
               )}
               {rowsRemovedClass !== null && (
                 <div className={rowsRemovedClass}>
-                  <Icons.FilterFunnel width={12} height={12} />
+                  <Icons.FilterFunnel01 size={12} stroke='currentColor' />
                 </div>
               )}
               <span className='text-xs text-blue-400'>#{node.nodeId}</span>

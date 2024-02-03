@@ -1,11 +1,10 @@
 import React from 'react';
+import * as Icons from 'untitledui-js-base';
 
 import EditDB from '@pxl/components/EditDB';
 import store from '@pxl/utils/store.js';
 
 import DB from './DB';
-
-import * as Icons from '@pxl/atoms/Icons';
 
 
 const Leftbar = () => {
@@ -34,7 +33,7 @@ const Leftbar = () => {
           onClick={onToggle}
           disabled={false}
         >
-          <Icons.LayoutLeft width={20} height={20} />
+          <Icons.LayoutLeft size={20} stroke='currentColor' />
         </button>
       </div>
       {dbs.length === 0 && (
@@ -43,7 +42,7 @@ const Leftbar = () => {
             className='p-1 text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-600 hover:rounded-md mt-[-40px]'
             onClick={setOpen.bind(null, true)}
           >
-            <Icons.Plus width={20} height={20} />
+            <Icons.Plus size={20} stroke='currentColor' />
           </button>
           <div className='text-sm text-gray-400'>add db</div>
         </div>
@@ -61,7 +60,7 @@ const Leftbar = () => {
           className='text-gray-500 dark:text-gray-200 bg-gray-300 dark:bg-gray-500 hover:bg-opacity-70 text-center border dark:border-control-dark rounded-md m-2 p-2'
           onClick={setOpen.bind(null, true)}
         >
-          <Icons.Plus width={20} height={20} className='mx-auto' />
+          <Icons.Plus size={20} className='mx-auto' stroke='currentColor' />
         </button>
       )}
       <EditDB id={null} dsn={''} name={''} open={open} onClose={setOpen.bind(null, false)} />

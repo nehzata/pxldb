@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {X} from '@pxl/atoms/Icons';
+import * as Icons from 'untitledui-js-base';
 import store from '@pxl/utils/store.js';
 
 const Tab = ({id, isPreview, activeId}) => {
@@ -50,7 +50,7 @@ const Tab = ({id, isPreview, activeId}) => {
         }
         onClick={onClose}
       >
-        <X width={16} height={16} />
+        <Icons.X size={16} stroke='currentColor' />
       </div>
     </div >
   );

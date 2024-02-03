@@ -1,7 +1,7 @@
 import React from 'react';
+import * as Icons from 'untitledui-js-base';
 
 import ConfirmModal from '@pxl/atoms/ConfirmModal';
-import {Trash} from '@pxl/atoms/Icons';
 import store from '@pxl/utils/store.js';
 import * as Wails from '@wails/go/app/App';
 
@@ -51,7 +51,7 @@ const Session = ({id, title}) => {
       </button >
       <ConfirmModal
         btn={
-          <Trash width={16} height={16} />
+          <Icons.Trash01 size={16} stroke='currentColor' />
         }
         btnClassName='hidden group-hover:block flex-shrink-0 text-red-500 hover:bg-gray-300 p-1 rounded'
         title='Delete session?'

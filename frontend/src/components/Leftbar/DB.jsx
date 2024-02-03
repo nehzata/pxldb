@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as Icons from '@pxl/atoms/Icons';
+import * as Icons from 'untitledui-js-base';
 import store from '@pxl/utils/store.js';
 import EditDB from '@pxl/components/EditDB';
 import * as Wails from '@wails/go/app/App';
@@ -43,22 +43,22 @@ const DB = ({id, dsn, name, isExpanded}) => {
           className='flex-grow flex flex-row justify-start items-center space-x-2 overflow-hidden focus:outline-none mr-2'
           onClick={onToggle}
         >
-          {isExpanded && <Icons.ChevronDown className='flex-shrink-0' width={16} height={16} />}
-          {!isExpanded && <Icons.ChevronRight className='flex-shrink-0' width={16} height={16} />}
-          <Icons.Database className='flex-shrink-0' width={16} height={16} />
+          {isExpanded && <Icons.ChevronDown className='flex-shrink-0' size={16} stroke='currentColor' />}
+          {!isExpanded && <Icons.ChevronRight className='flex-shrink-0' size={16} stroke='currentColor' />}
+          <Icons.Database01 className='flex-shrink-0' size={16} stroke='currentColor' />
           <div className='overflow-hidden whitespace-nowrap text-ellipsis text-sm'>{name}</div>
         </button>
         <button
           className='p-1 hover:bg-gray-300 dark:hover:bg-gray-600 hover:rounded-md focus:outline-none'
           onClick={onAdd}
         >
-          <Icons.Plus className='hidden group-hover:block flex-shrink-0' width={16} height={16} />
+          <Icons.Plus className='hidden group-hover:block flex-shrink-0' size={16} stroke='currentColor' />
         </button>
         <button
           className='p-1 hover:bg-gray-300 dark:hover:bg-gray-600 hover:rounded-md focus:outline-none'
           onClick={() => setSettingsOpen(true)}
         >
-          <Icons.Settings className='hidden group-hover:block flex-shrink-0' width={16} height={16} />
+          <Icons.Settings01 className='hidden group-hover:block flex-shrink-0' size={16} stroke='currentColor' />
         </button>
         <EditDB
           id={id}

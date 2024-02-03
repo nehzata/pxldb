@@ -1,5 +1,5 @@
 import React from 'react';
-import * as Icons from '@pxl/atoms/Icons';
+import * as Icons from 'untitledui-js-base';
 
 import * as C from './consts';
 import * as utils from './utils';
@@ -69,7 +69,7 @@ const Chart = ({plan, metric}) => {
                     {metric === 'estimation' && (
                       <div className='flex flex-row justify-center items-center'>
                         <div className='w-2 mr-2 flex-shrink-0'>
-                          {row[1][C.PLANNER_ESTIMATE_DIRECTION] === C.PLANNER_ESTIMATE_DIRECTION_UNDER && <Icons.ArrowDown width={12} />}
+                          {row[1][C.PLANNER_ESTIMATE_DIRECTION] === C.PLANNER_ESTIMATE_DIRECTION_UNDER && <Icons.ArrowDown size={12} stroke='currentColor' />}
                         </div>
                         <div
                           className={row[1][C.PLANNER_ESTIMATE_DIRECTION] === C.PLANNER_ESTIMATE_DIRECTION_UNDER ? 'h-1 bg-gray-500' : 'h-1 bg-gray-300'}
@@ -85,7 +85,7 @@ const Chart = ({plan, metric}) => {
                           }}
                         />
                         <div className='w-2 ml-2 flex-shrink-0'>
-                          {row[1][C.PLANNER_ESTIMATE_DIRECTION] === C.PLANNER_ESTIMATE_DIRECTION_OVER && <Icons.ArrowUp width={12} />}
+                          {row[1][C.PLANNER_ESTIMATE_DIRECTION] === C.PLANNER_ESTIMATE_DIRECTION_OVER && <Icons.ArrowUp size={12} stroke='currentColor' />}
                         </div>
                       </div>
                     )}

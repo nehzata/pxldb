@@ -1,5 +1,5 @@
 import React from 'react';
-import {AlertOctagon as Alert} from '@pxl/atoms/Icons';
+import * as Icons from 'untitledui-js-base';
 import Modal from '@pxl/atoms/Modal';
 
 
@@ -20,7 +20,7 @@ export default ({btn, btnClassName = 'focus:outline-none', title, text, onConfir
       <Modal open={open} onClose={setOpen.bind(null, false)}>
         <div className='flex flex-col text-center space-y-4'>
           <div className='mx-auto text-red-500'>
-            <Alert width={32} height={32} />
+            <Icons.AlertOctagon size={32} stroke='currentColor' />
           </div>
           <h3 className='font-semibold text-gray-700 dark:text-gray-200 text-sm'>{title}</h3>
           <div className='mt-2 dark:text-gray-300 text-sm'>{text}</div>

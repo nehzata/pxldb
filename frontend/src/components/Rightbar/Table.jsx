@@ -1,6 +1,6 @@
 import React from 'react';
+import * as Icons from 'untitledui-js-base';
 
-import * as Icons from '@pxl/atoms/Icons';
 import store from '@pxl/utils/store';
 import * as Wails from '@wails/go/app/App';
 
@@ -60,9 +60,9 @@ const Table = ({dsn, sId, name, cols}) => {
           className='flex-grow flex flex-row justify-start items-center space-x-2 overflow-hidden focus:outline-none mr-2'
           onClick={onToggle}
         >
-          {isExpanded && <Icons.ChevronDown className='flex-shrink-0 text-gray-500' width={16} height={16} />}
-          {!isExpanded && <Icons.ChevronRight className='flex-shrink-0 text-gray-500' width={16} height={16} />}
-          <Icons.Table className='flex-shrink-0 text-gray-500' width={16} height={16} />
+          {isExpanded && <Icons.ChevronDown className='flex-shrink-0 text-gray-500' size={16} stroke='currentColor' />}
+          {!isExpanded && <Icons.ChevronRight className='flex-shrink-0 text-gray-500' size={16} stroke='currentColor' />}
+          <Icons.Table className='flex-shrink-0 text-gray-500' size={16} stroke='currentColor' />
           <div className='overflow-hidden whitespace-nowrap text-ellipsis text-gray-800 dark:text-gray-300 text-sm'>{name}</div>
         </button>
         <button
@@ -70,28 +70,28 @@ const Table = ({dsn, sId, name, cols}) => {
           onClick={onTemplate}
           data-template='select'
         >
-          <Icons.SearchSm className='flex-shrink-0' width={16} height={16} />
+          <Icons.SearchSM className='flex-shrink-0' size={16} stroke='currentColor' />
         </button>
         <button
           className='hidden group-hover:block p-1 text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-600 hover:rounded-md focus:outline-none'
           onClick={onTemplate}
           data-template='insert'
         >
-          <Icons.Plus className='flex-shrink-0' width={16} height={16} />
+          <Icons.Plus className='flex-shrink-0' size={16} stroke='currentColor' />
         </button>
         <button
           className='hidden group-hover:block p-1 text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-600 hover:rounded-md focus:outline-none'
           onClick={onTemplate}
           data-template='delete'
         >
-          <Icons.Minus className='flex-shrink-0' width={16} height={16} />
+          <Icons.Minus className='flex-shrink-0' size={16} stroke='currentColor' />
         </button>
         <button
           className='hidden group-hover:block p-1 text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-600 hover:rounded-md focus:outline-none'
           onClick={onTemplate}
           data-template='update'
         >
-          <Icons.Pencil className='flex-shrink-0' width={16} height={16} />
+          <Icons.Pencil01 className='flex-shrink-0' size={16} stroke='currentColor' />
         </button>
       </div>
       {isExpanded && cols.map((col, i) => (

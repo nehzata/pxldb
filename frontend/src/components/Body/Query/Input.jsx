@@ -2,7 +2,7 @@ import React from 'react';
 import {keymap} from '@codemirror/view';
 
 import store from '@pxl/utils/store';
-import * as Icons from '@pxl/atoms/Icons';
+import * as Icons from 'untitledui-js-base';
 import useCodeMirror from '@pxl/components/Codemirror/useCodeMirror';
 import * as Wails from '@wails/go/app/App';
 import * as Runtime from '@wails/runtime';
@@ -228,7 +228,7 @@ const Input = ({dbId, dsn, schema, sId, id, qry}) => {
             className='px-2 py-1 shadow-sm text-white bg-red-500 hover:bg-red-400 focus:outline-none rounded-md'
             onClick={onDelete}
           >
-            <Icons.Trash width={16} height={16} />
+            <Icons.Trash01 size={16} stroke='currentColor' />
           </button>
         )}
         <button
@@ -237,7 +237,7 @@ const Input = ({dbId, dsn, schema, sId, id, qry}) => {
           onClick={onExplain}
           disabled={loading}
         >
-          <Icons.PresentationChart width={16} height={16} />
+          <Icons.PresentationChart01 size={16} stroke='currentColor' />
         </button>
         <button
           type='button'
@@ -245,7 +245,7 @@ const Input = ({dbId, dsn, schema, sId, id, qry}) => {
           onClick={onExecute}
           disabled={loading}
         >
-          <Icons.Play width={16} height={16} />
+          <Icons.Play size={16} stroke='currentColor' />
         </button>
       </div>
     </>

@@ -1,7 +1,7 @@
 import React from 'react';
+import * as Icons from 'untitledui-js-base';
 
 import store from '@pxl/utils/store.js';
-import * as Icons from '@pxl/atoms/Icons';
 import * as Wails from '@wails/go/app/App';
 
 import Table from './Table';
@@ -82,10 +82,10 @@ const Rightbar = () => {
           disabled={isRefreshing}
         >
           {isRefreshing && (
-            <Icons.RefreshCcwVertical width={20} height={20} />
+            <Icons.RefreshCCW03 size={20} stroke='currentColor' />
           )}
           {!isRefreshing && (
-            <Icons.RefreshCcw width={20} height={20} />
+            <Icons.RefreshCCW01 size={20} stroke='currentColor' />
           )}
         </button>
       </div>

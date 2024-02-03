@@ -1,6 +1,6 @@
 import React from 'react';
+import * as Icons from 'untitledui-js-base';
 
-import {X} from '@pxl/atoms/Icons';
 import Portal from '@pxl/atoms/Portal';
 
 
@@ -70,7 +70,7 @@ export let ModalBasic = ({open, onClose, children}) => (
       className='float-left focus:outline-none p-3'
       onClick={onClose}
     >
-      <X width={16} height={16} />
+      <Icons.X size={16} stroke='currentColor' />
     </button>
     {children}
   </Modal>

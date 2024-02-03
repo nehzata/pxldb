@@ -1,7 +1,7 @@
 import React from 'react';
+import * as Icons from 'untitledui-js-base';
 
 import store from '@pxl/utils/store.js';
-import {LayoutLeft, LayoutRight} from '@pxl/atoms/Icons';
 
 import Empty from './Empty';
 import Session from './Session';
@@ -53,7 +53,7 @@ const Body = () => {
               style={{'--wails-draggable': 'no-drag'}}
               onClick={onToggleLeftbar}
             >
-              <LayoutLeft width={20} height={20} />
+              <Icons.LayoutLeft size={20} stroke='currentColor' />
             </button>
           )}
           <div
@@ -74,7 +74,7 @@ const Body = () => {
               style={{'--wails-draggable': 'no-drag'}}
               onClick={onToggleRightbar}
             >
-              <LayoutRight width={20} height={20} />
+              <Icons.LayoutRight size={20} stroke='currentColor' />
             </button>
           )}
         </div>

@@ -1,8 +1,8 @@
 import React from 'react';
 import {useForm} from 'react-hook-form';
+import * as Icons from 'untitledui-js-base';
 
 import store from '@pxl/utils/store.js';
-import {Database} from '@pxl/atoms/Icons';
 import Modal from '@pxl/atoms/Modal';
 import ConfirmModal from '@pxl/atoms/ConfirmModal';
 import * as Wails from '@wails/go/app/App';
@@ -84,7 +84,7 @@ const EditDB = ({id, dsn, name, open, onClose}) => {
     <Modal open={open} onClose={onClose}>
       <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col text-center'>
         <div className='mx-auto text-gray-400'>
-          <Database width={36} height={36} />
+          <Icons.Database01 size={36} stroke='currentColor' />
         </div>
         <h3 className='font-semibold text-gray-700 dark:text-gray-300 text-sm mt-4'>{id === null ? 'Add database' : 'Edit database'}</h3>
         <div className='mt-4 flex flex-col space-y-4'>
