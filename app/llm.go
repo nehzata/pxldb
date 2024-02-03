@@ -93,6 +93,9 @@ Loop:
 
 func (a *App) Llm_Init() {
 	if a.modelState != MODEL_STATE_IDLE {
+		if (a.modelState == MODEL_STATE_RUNNING) {
+			wails.EventsEmit(a.ctx, "llm-init", `{"loaded": true}`)
+		}
 		return
 	}
 
