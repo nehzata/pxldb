@@ -50,6 +50,11 @@ UPDATE sessions
 SET delete_ts = UNIXEPOCH()
 WHERE id = @id;
 
+-- name: SessionsUpdate :exec
+UPDATE sessions
+SET title = @title
+WHERE id = @id;
+
 -- name: SessionQueriesGet :many
 SELECT id, qry, res
 FROM session_queries

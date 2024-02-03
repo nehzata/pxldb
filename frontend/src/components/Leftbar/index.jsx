@@ -48,7 +48,7 @@ const Leftbar = () => {
         </div>
       )}
       {dbs.length !== 0 && (
-        <div className='flex-grow flex flex-col pl-3 pr-2 py-2 overflow-scroll space-y-4'>
+        <div className='flex-grow flex flex-col pl-3 pr-2 py-2 overflow-y-scroll space-y-4'>
           {dbs.map((db, i) => (
             <DB {...db} key={i} />
           ))}

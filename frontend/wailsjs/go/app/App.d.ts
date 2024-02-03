@@ -26,6 +26,8 @@ export function Cfg_SessionsGet():Promise<Array<app.Session>>;
 
 export function Cfg_SessionsInsert(arg1:number):Promise<string>;
 
+export function Cfg_SessionsUpdate(arg1:string,arg2:string):Promise<void>;
+
 export function Cfg_WinBoundsGet():Promise<app.WinBounds>;
 
 export function Cfg_WinBoundsSet(arg1:app.WinBounds):Promise<void>;

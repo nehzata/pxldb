@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"math"
+	"strings"
 
 	"github.com/gofrs/uuid/v5"
 	_ "github.com/mattn/go-sqlite3"
@@ -149,6 +150,18 @@ func (a *App) Cfg_SessionsInsert(dbID int64) string {
 		DbID: dbID,
 	})
 	return id
+}
+
+func (a *App) Cfg_SessionsUpdate(sID string, title string) {
+	var t sql.NullString
+	titleTrimmed := strings.TrimSpace(title)
+	if titleTrimmed != "" {
+		t = sql.NullString{titleTrimmed, true}
+	}
+	a.cfg.SessionsUpdate(context.Background(), database.SessionsUpdateParams{
+		ID:    sID,
+		Title: t,
+	})
 }
 
 func (a *App) Cfg_SessionsDelete(sID string) {

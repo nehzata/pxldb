@@ -68,9 +68,13 @@ const DB = ({id, dsn, name, isExpanded}) => {
           onClose={() => setSettingsOpen(false)}
         />
       </div>
-      {isExpanded && sessions.map((session, i) => (
-        <Session dbId={id} {...session} key={i} />
-      ))}
+      {isExpanded && (
+        <div className='ml-12'>
+          {sessions.map((session, i) => (
+            <Session dbId={id} {...session} key={i} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

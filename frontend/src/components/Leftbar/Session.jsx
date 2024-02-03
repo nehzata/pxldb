@@ -7,6 +7,8 @@ import * as Wails from '@wails/go/app/App';
 
 const Session = ({id, title}) => {
   const {state: {tabs: {activeId}}, dispatch} = React.useContext(store);
+  const [value, setValue] = React.useState(title);
+  const [editing, setEditing] = React.useState(false);
 
   const onClick = React.useCallback(
     e => {
@@ -21,6 +23,8 @@ const Session = ({id, title}) => {
     [dispatch, id],
   );
 
+  const onDoubleClick = React.useCallback(e => setEditing(true), [setEditing]);
+
   const onDelete = React.useCallback(
     e => {
       Wails.Cfg_SessionsDelete(id);
@@ -32,13 +36,44 @@ const Session = ({id, title}) => {
     [dispatch, id],
   );
 
+  const onEdit = React.useCallback(e => {
+    setValue(e.target.value);
+  }, [setValue])
+
+  const onSave = React.useCallback(e => {
+    Wails.Cfg_SessionsUpdate(id, value)
+    setEditing(false);
+  }, [id, value, setEditing]);
+
   const isActive = React.useMemo(
     () => (activeId === id),
     [activeId, id],
   );
 
+  if (editing === true) {
+    return (
+      <div className='flex flex-row justify-between items-center h-6'>
+        <div className='flex-grow flex-shrink'>
+          <input
+            type='text'
+            className='border rounded-l-md w-full focus:outline-none px-1'
+            value={value || ''}
+            onChange={onEdit}
+          />
+        </div>
+        <button
+          type='button'
+          className='flex justify-center items-center rounded-r-md bg-black text-white h-6 w-6 flex-shrink-0'
+          onClick={onSave}
+        >
+          <Icons.Check size={14} stroke='currentColor' />
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className='ml-12 group flex flex-row justify-between items-center space-x-2 h-6'>
+    <div className='group flex flex-row justify-between items-center space-x-2 h-6'>
       <button
         type='button'
         className={isActive
@@ -46,8 +81,9 @@ const Session = ({id, title}) => {
           : 'flex-grow overflow-hidden text-ellipsis focus:outline-none text-black dark:text-gray-200 text-left text-sm'
         }
         onClick={onClick}
+        onDoubleClick={onDoubleClick}
       >
-        {title || 'untitled'}
+        {value || 'untitled'}
       </button >
       <ConfirmModal
         btn={

@@ -29,7 +29,7 @@ to this in your browser, and you can call your Go code from devtools.
 To build a redistributable, production mode package, use `wails build`.
 
 ## TODO
-- rename sessions
+- <s>rename sessions</s>
 - fuzzy search
 - <s>autocomplete integration</s>
 - grammar updates
