@@ -14,3 +14,6 @@
 [submodule "llm/third_party/fmt"]
 	path = llm/third_party/fmt
 	url = git@github.com:fmtlib/fmt.git
+[submodule "tools/create-dmg"]
+	path = tools/create-dmg
+	url = git@github.com:create-dmg/create-dmg.git
