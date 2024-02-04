@@ -23,8 +23,6 @@ const Session = ({id, title}) => {
     [dispatch, id],
   );
 
-  const onDoubleClick = React.useCallback(e => setEditing(true), [setEditing]);
-
   const onDelete = React.useCallback(
     e => {
       Wails.Cfg_SessionsDelete(id);
@@ -52,13 +50,15 @@ const Session = ({id, title}) => {
 
   if (editing === true) {
     return (
-      <div className='flex flex-row justify-between items-center h-6'>
+      <div className='-ml-1 flex flex-row justify-between items-center h-6'>
         <div className='flex-grow flex-shrink'>
           <input
             type='text'
             className='border rounded-l-md w-full focus:outline-none px-1'
             value={value || ''}
             onChange={onEdit}
+            onBlur={() => setEditing(false)}
+            autoFocus={true}
           />
         </div>
         <button
@@ -81,7 +81,7 @@ const Session = ({id, title}) => {
           : 'flex-grow overflow-hidden text-ellipsis focus:outline-none text-black dark:text-gray-200 text-left text-sm'
         }
         onClick={onClick}
-        onDoubleClick={onDoubleClick}
+        onDoubleClick={() => setEditing(true)}
       >
         {value || 'untitled'}
       </button >
