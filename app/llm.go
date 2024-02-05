@@ -36,7 +36,7 @@ var MODELS map[string]string = map[string]string{
 	"mistral-7b":          "https://huggingface.co/TheBloke/Mistral-7B-v0.1-GGUF/resolve/main/mistral-7b-v0.1.Q4_0.gguf?download=true",
 	"mistral-7b-instruct": "https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF/resolve/main/mistral-7b-instruct-v0.2.Q4_0.gguf?download=true",
 }
-var DEFAULT_MODEL = "mistral-7b"
+var DEFAULT_MODEL = "mistral-7b-instruct"
 
 func (a *App) dl_init() {
 	a.modelState = MODEL_STATE_DOWNLOADING
