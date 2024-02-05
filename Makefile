@@ -24,9 +24,29 @@ dev: llm/libllm.a ## Run hot reload dev server
 	@wails dev -extensions go,sql
 
 .PHONY:
+test:
+	@make -C llm test
+
+.PHONY:
 build: regen llm/libllm.a
 	wails build
 	@cp llm/third_party/llama.cpp/ggml-metal.metal build/bin/PXLDB.app/Contents/Resources/
+
+.PHONY:
+dist: build
+	codesign -s DE5BEEA73C8841570B1C2055B01B78DD04627B10 -v --timestamp --deep --options runtime build/bin/PXLDB.app
+	rm -f build/bin/PXLDB.dmg
+	bash tools/create-dmg/create-dmg \
+		--volname PXLDB \
+		--window-pos 200 120 \
+		--window-size 500 300 \
+		--icon-size 100 \
+		--icon "PXLDB.app" 150 100 \
+		--hide-extension "PXLDB.app" \
+		--app-drop-link 350 100 \
+		--notarize "notarytool-password" \
+		build/bin/PXLDB.dmg \
+		build/bin/PXLDB.app
 
 .PHONY: lint
 lint: ## Lint the code.

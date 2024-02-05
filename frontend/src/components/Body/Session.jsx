@@ -48,7 +48,7 @@ const Session = () => {
         ].join('\n'))).join('\n\n');
         await Wails.Llm_SetSchema(
           db.id,
-          `<s>[INST] You are required to respond back with PostgreSQL queries based on the following schema:\n ${sql}\n\n[/INST]PostgreSQL query:\n`
+          `<s>## Task\nGenerate a PostgreSQL query.\n### Database Schema\n${sql}\n\n### PostgreSQL query:\n`
         );
       })();
     }

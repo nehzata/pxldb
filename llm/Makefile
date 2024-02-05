@@ -41,13 +41,14 @@ clean:
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
 
-.PHONY: dev
-dev:
-	reflex -d fancy -c reflex-dev.conf
-
 .PHONY: test
-test:
-	reflex -c reflex-test.conf
+test: libcatch2 $(SRC_OBJ) $(TEST_OBJ)
+	mkdir -p $(OUTDIR)
+	$(CXX) \
+		-I third_party/Catch2/src -I third_party/Catch2/build/generated-includes \
+		$(CXX_FLAGS) $(LDFLAGS) -L third_party/Catch2/build/src -lCatch2 -lCatch2Main \
+		-o $(OUTDIR)/test $(SRC_OBJ) $(TEST_OBJ)
+	$(OUTDIR)/test
 
 libllama:
 	@make -C third_party/llama.cpp libllama.a
@@ -58,12 +59,6 @@ libllm.a: libllama $(SRC_OBJ)
 libcatch2:
 	@mkdir -p third_party/Catch2/build
 	@cd third_party/Catch2/build && cmake .. && cmake --build .
-
-bin/test: libcatch2 $(SRC_OBJ) $(TEST_OBJ)
-	mkdir -p $(OUTDIR)
-	$(CXX) -I third_party/Catch2/src -I third_party/Catch2/build/generated-includes \
-	$(CXX_FLAGS) $(LDFLAGS) -L third_party/Catch2/build/src -lCatch2 -lCatch2Main \
-	-o $(OUTDIR)/test $(SRC_OBJ) $(TEST_OBJ)
 
 src/%.o: src/%.cpp $(INC)
 	$(CXX) $(CXX_FLAGS) -MMD -o $@ -c $<

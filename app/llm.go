@@ -29,16 +29,27 @@ import (
 	wails "github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
+var MODELS map[string]string = map[string]string{
+	"sqlcoder-7b.Q4_0.gguf":              "https://huggingface.co/TheBloke/sqlcoder-7B-GGUF/resolve/main/sqlcoder-7b.Q4_0.gguf?download=true",
+	"mistral-7b-instruct-v0.2.Q4_0.gguf": "https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF/resolve/main/mistral-7b-instruct-v0.2.Q4_0.gguf?download=true",
+}
+var DEFAULT_MODEL = "mistral-7b-instruct-v0.2.Q4_0.gguf"
+
 func (a *App) dl_init() {
 	a.modelState = MODEL_STATE_DOWNLOADING
 
-	modelPath, err := xdg.ConfigFile("PXLDB/model.gguf")
+	modelPath, err := xdg.ConfigFile(fmt.Sprintf("PXLDB/%s", DEFAULT_MODEL))
 	if err != nil {
 		panic(err)
 	}
 
+	url, ok := MODELS[DEFAULT_MODEL]
+	if !ok {
+		panic(fmt.Errorf("unable to find %s", DEFAULT_MODEL))
+	}
+
 	client := grab.NewClient()
-	req, _ := grab.NewRequest(modelPath, "https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF/resolve/main/mistral-7b-instruct-v0.2.Q4_0.gguf?download=true")
+	req, _ := grab.NewRequest(modelPath, url)
 	resp := client.Do(req)
 
 	t := time.NewTicker(500 * time.Millisecond)
@@ -47,12 +58,16 @@ Loop:
 	for {
 		select {
 		case <-t.C:
-			// fmt.Printf("transferred %v / %v bytes (%.2f%%)\n",
-			// 	resp.BytesComplete(),
-			// 	resp.Size(),
-			// 	100*resp.Progress(),
-			// )
-			wails.EventsEmit(a.ctx, "llm-init", fmt.Sprintf(`{"progress": %.2f}`, 100*resp.Progress()))
+			wails.EventsEmit(
+				a.ctx,
+				"llm-init",
+				fmt.Sprintf(
+					`{"progress": %.2f, "received": %v, "total": %v}`,
+					100*resp.Progress(),
+					resp.BytesComplete(),
+					resp.Size(),
+				),
+			)
 
 		case <-resp.Done:
 			// download is complete
@@ -93,7 +108,7 @@ Loop:
 
 func (a *App) Llm_Init() {
 	if a.modelState != MODEL_STATE_IDLE {
-		if (a.modelState == MODEL_STATE_RUNNING) {
+		if a.modelState == MODEL_STATE_RUNNING {
 			wails.EventsEmit(a.ctx, "llm-init", `{"loaded": true}`)
 		}
 		return

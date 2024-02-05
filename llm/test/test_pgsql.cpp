@@ -41,6 +41,13 @@ TEST_CASE("pgsql") {
         REQUIRE(run(g, in) == true);
     }
 
+    SECTION("SELECT users.id AS user_id FROM users") {
+        spdlog::set_level(spdlog::level::debug);
+        grammar_pgsql g;
+        std::string in = "SELECT users.id AS user_id FROM users;";
+        REQUIRE(run(g, in) == true);
+    }
+
     SECTION("SELECT u.* FROM users u WHERE access_token IS NOT NULL") {
         // spdlog::set_level(spdlog::level::debug);
         grammar_pgsql g;

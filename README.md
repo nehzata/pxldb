@@ -28,6 +28,13 @@ to this in your browser, and you can call your Go code from devtools.
 
 To build a redistributable, production mode package, use `wails build`.
 
+## Dist
+
+```
+security find-identity -v -p codesigning | grep Developer
+xcrun notarytool store-credentials "notarytool-password" --apple-id <APPLE_ID_EMAIL> --team-id <TEAM_ID> --password <APPLE_ID_APP_PASSWORD>
+```
+
 ## TODO
 - <s>rename sessions</s>
 - fuzzy search
@@ -39,3 +46,4 @@ To build a redistributable, production mode package, use `wails build`.
   - delete grammar
 - <s>download model on first run</s>
 - plan / explain view improvements
+  - failed query plan causes error
