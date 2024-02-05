@@ -30,10 +30,13 @@ import (
 )
 
 var MODELS map[string]string = map[string]string{
-	"sqlcoder-7b.Q4_0.gguf":              "https://huggingface.co/TheBloke/sqlcoder-7B-GGUF/resolve/main/sqlcoder-7b.Q4_0.gguf?download=true",
-	"mistral-7b-instruct-v0.2.Q4_0.gguf": "https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF/resolve/main/mistral-7b-instruct-v0.2.Q4_0.gguf?download=true",
+	"phi-2":               "https://huggingface.co/nakcnx/phi-2-sql-gguf/resolve/main/phi-2-sql-Q5_K_M.gguf?download=true",
+	"phi-2-sql":           "https://huggingface.co/nakcnx/phi-2-sql-gguf/resolve/main/phi-2-sql-Q5_K_M.gguf?download=true",
+	"sqlcoder-7b":         "https://huggingface.co/TheBloke/sqlcoder-7B-GGUF/resolve/main/sqlcoder-7b.Q4_0.gguf?download=true",
+	"mistral-7b":          "https://huggingface.co/TheBloke/Mistral-7B-v0.1-GGUF/resolve/main/mistral-7b-v0.1.Q4_0.gguf?download=true",
+	"mistral-7b-instruct": "https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF/resolve/main/mistral-7b-instruct-v0.2.Q4_0.gguf?download=true",
 }
-var DEFAULT_MODEL = "mistral-7b-instruct-v0.2.Q4_0.gguf"
+var DEFAULT_MODEL = "mistral-7b"
 
 func (a *App) dl_init() {
 	a.modelState = MODEL_STATE_DOWNLOADING

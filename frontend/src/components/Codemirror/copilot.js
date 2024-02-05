@@ -1,3 +1,4 @@
+// based on https://github.com/asadm/codemirror-copilot
 import {
   ViewPlugin,
   // DecorationSet,
@@ -32,12 +33,12 @@ const insert = view => {
   view.dispatch({
     changes: {from: pos, to: pos, insert: txt},
     range: EditorSelection.cursor(pos + txt.length),
+    selection: {anchor: pos + txt.length, head: pos + txt.length},
     userEvent: "input.complete",
   });
 
   return true;
 };
-
 
 const ConfigFacet = Facet.define({
   combine(value) {
@@ -98,19 +99,6 @@ const OnRender = ViewPlugin.fromClass(
         this.decorations = Decoration.none;
         return;
       }
-      //   console.log("SUGGESTION", suggestionText, update.transactions.map(t => t.effects.map(e=>e.is(InlineSuggestionEffect))));
-      //   for (const tr of update.transactions) {
-      //     // Check the userEvent property of the transaction
-      //     if (wasAuto){
-      //       wasAuto = false;
-      //       debugger;
-      //     }
-      //     if (tr.isUserEvent("input.complete")) {
-      //         console.log("Change was due to autocomplete");
-      //     } else {
-      //         console.log("Change was due to user input");
-      //     }
-      // }
 
       const pos = update.view.state.selection.main.head;
       const widgets = [];
