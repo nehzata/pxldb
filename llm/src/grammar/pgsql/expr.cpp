@@ -41,7 +41,10 @@ class grammar_pgsql_expr_dash : public grammar {
                         new grammar_ws(),             // a1
                         new grammar_alternatives({    // a1
                             new grammar_list({
-                                new grammar_identifier_ci("LIKE"),
+                                new grammar_alternatives({
+                                    new grammar_identifier_ci("LIKE"),
+                                    new grammar_identifier_ci("ILIKE"),
+                                }),
                                 new grammar_ws(),
                                 new grammar_pgsql_expr(),
                                 new grammar_zero_or_one(
@@ -290,7 +293,10 @@ grammar_pgsql_expr &grammar_pgsql_expr::operator=(const grammar_pgsql_expr &src)
 //         new grammar_ws(),             // a1
 //         new grammar_alternatives({    // a1
 //             new grammar_list({
-//                 new grammar_identifier("LIKE"),
+//                 new grammar_alternatives({
+//                     new grammar_identifier("LIKE"),
+//                     new grammar_identifier("ILIKE"),
+//                 }),
 //                 new grammar_ws(),
 //                 new grammar_pgsql_expr(),
 //                 new grammar_zero_or_one(
