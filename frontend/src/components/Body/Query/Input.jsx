@@ -11,6 +11,7 @@ import * as QuickCopy from './quick-copy';
 const Input = ({dbId, dsn, schema, sId, id, qry}) => {
   const {dispatch} = React.useContext(store);
   const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState(false);
 
   const execute = React.useCallback(async q => {
     let _id = id;
@@ -135,9 +136,19 @@ const Input = ({dbId, dsn, schema, sId, id, qry}) => {
   const eventId = React.useMemo(() => [sId, id].join(':'), [sId, id]);
 
   const onPrime = React.useCallback(q => {
-    if (q.trim() === "") return;
-    Wails.Llm_Prime(dbId, q);
-  }, [dbId]);
+    if (q.trim() === "") {
+      setError(false);
+      return;
+    }
+    (async () => {
+      try {
+        await Wails.Llm_Prime(dbId, q);
+        setError(false);
+      } catch (err) {
+        setError(true);
+      }
+    })();
+  }, [dbId, setError]);
 
   const onAutocomplete = React.useCallback((reqId, q) => {
     if (q.trim() === "") return;
@@ -216,7 +227,10 @@ const Input = ({dbId, dsn, schema, sId, id, qry}) => {
   return (
     <>
       <div
-        className='border dark:border-divider-dark rounded-md shadow-sm w-full'
+        className={error === true
+          ? 'border rounded-md shadow-sm w-full cm-error'
+          : 'border rounded-md shadow-sm w-full'
+        }
         ref={ref}
         onFocus={onFocus}
         onBlur={onBlur}

@@ -13,6 +13,12 @@
   @apply outline-blue-200 !important;
 }
 
+.cm-error .cm-editor {
+  @apply outline !important;
+  @apply outline-[2px] !important;
+  @apply outline-red-300 !important;
+}
+
 .cm-lineNumbers .cm-gutterElement {
   @apply pr-2 !important;
   @apply pl-3 !important;

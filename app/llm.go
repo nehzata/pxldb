@@ -147,9 +147,9 @@ func (a *App) Llm_SetSchema(schemaId uint, schema string) {
 	C.llm_set_schema(C.int(schemaId), s)
 }
 
-func (a *App) Llm_Prime(schemaId uint, prompt string) {
+func (a *App) Llm_Prime(schemaId uint, prompt string) error {
 	if a.modelState != MODEL_STATE_RUNNING {
-		return
+		return nil
 	}
 	p := C.CString(prompt)
 	defer C.free(unsafe.Pointer(p))
@@ -160,6 +160,10 @@ func (a *App) Llm_Prime(schemaId uint, prompt string) {
 	defer C.free(unsafe.Pointer(r.error_code))
 
 	C.llm_prime(C.int(schemaId), p, &r)
+	if r.error == 1 {
+		return fmt.Errorf("prime failed with %s", C.GoString(r.error_code))
+	}
+	return nil
 	// if r.error == 1 {
 	// 	// return LlmResult{
 	// 	// 	Error:     true,
@@ -194,7 +198,7 @@ func (a *App) Llm_Autocomplete(eventId string, reqId uint, schemaId uint, prompt
 		error_code: (*C.char)(C.malloc(C.sizeof_char * 32)),
 		cancel:     0,
 		stop:       0,
-		token:      (*C.char)(C.malloc(C.sizeof_char * 32)),
+		token:      (*C.char)(C.malloc(C.sizeof_char * 256)),
 	}
 	defer C.free(unsafe.Pointer(r.error_code))
 	defer C.free(unsafe.Pointer(r.token))

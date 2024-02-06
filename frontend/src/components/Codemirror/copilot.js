@@ -142,7 +142,7 @@ const Keymap = Prec.highest(
 
 export const SuggestionEffect = StateEffect.define();
 
-export default ({onChange}) => [
+export default (onChange) => [
   ConfigFacet.of({onChange}),
   State,
   OnRender,

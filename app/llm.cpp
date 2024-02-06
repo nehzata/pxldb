@@ -46,7 +46,7 @@ void llm_prime(int schema_id, const char *prompt, struct llm_ctx *r) {
     unsigned int task_id = m->prime(schema_id, p);
     if (task_id == 0) {
         r->error = true;
-        snprintf(r->error_code, sizeof(r->error_code), "ERROR_INVALID_REQUEST");
+        snprintf(r->error_code, 32, "ERROR_INVALID_REQUEST");
         return;
     }
 
@@ -54,12 +54,14 @@ void llm_prime(int schema_id, const char *prompt, struct llm_ctx *r) {
     bool found = m->next_result(task_id, res);
     if (!found) {
         r->error = true;
-        snprintf(r->error_code, sizeof(r->error_code), "ERROR_TIMEOUT");
+        snprintf(r->error_code, 32, "ERROR_TIMEOUT");
     } else if (res.error) {
         r->error = true;
-        snprintf(r->error_code, sizeof(r->error_code), "ERROR_UNKNOWN");
+        snprintf(r->error_code, 32, "ERROR_UNKNOWN");
     } else if (res.cancel) {
         r->cancel = true;
+    } else if (res.stop) {
+        r->stop = true;
     }
 }
 
@@ -75,12 +77,12 @@ int llm_autocomplete(int schema_id, const char *prompt, llm_autocomplete_callbac
         bool found = m->next_result(task_id, res);
         if (!found) {
             r->error = true;
-            snprintf(r->error_code, sizeof(r->error_code), "ERROR_TIMEOUT");
+            snprintf(r->error_code, 32, "ERROR_TIMEOUT");
             cb(r);
             break;
         } else if (res.error) {
             r->error = true;
-            snprintf(r->error_code, sizeof(r->error_code), "ERROR_UNKNOWN");
+            snprintf(r->error_code, 32, "ERROR_UNKNOWN");
             cb(r);
             break;
         } else if (res.cancel) {
@@ -93,7 +95,7 @@ int llm_autocomplete(int schema_id, const char *prompt, llm_autocomplete_callbac
             break;
         }
 
-        snprintf(r->token, sizeof(r->token), "%s", res.t.c_str());
+        snprintf(r->token, 256, "%s", res.t.c_str());
         cb(r);
     }
 

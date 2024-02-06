@@ -51,6 +51,10 @@ int model::init() {
 }
 
 void model::set_schema(uint schema_id, std::string &schema) {
+    if (current_schema_id == schema_id) {
+        return;
+    }
+
     // tokenize the prompt outside the lock scope
     std::vector<llama_token> tokens = tokenize(schema);
 
@@ -338,9 +342,15 @@ void model::run() {
                 if (cache_sampling_states.size()) {
                     s = cache_sampling_states.back();
                 }
-                if (!s.add(ctx, t)) {
-                    spdlog::info("run {}: prompt contains syntax errors", current_task->id);
+                sampler_result sres = s.add(ctx, t);
+                if (sres == SAMPLER_RESULT_FINISH) {
+                    // we've come to end of sampler grammar
+                    spdlog::info("run {}: prompt syntax finished", current_task->id);
+                    current_task->state = STATE_DONE;
+                    return;
+                } else if (sres == SAMPLER_RESULT_ERROR) {
                     // we've come across an invalid token
+                    spdlog::error("run {}: prompt contains syntax errors", current_task->id);
                     current_task->state = STATE_ERROR;
                     return;
                 }

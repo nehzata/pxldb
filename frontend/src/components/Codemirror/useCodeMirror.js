@@ -54,20 +54,22 @@ export default ({id, doc, keymaps, ref, shouldUseDarkColors, /*onFocus, onBlur,*
               }),
               autocompletion(),
               shouldUseDarkColors ? xcodeDark : xcodeLight,
-              copilot({
-                onChange,
-              }),
+              copilot(onChange),
               // EditorView.updateListener.of(update => {
-              //   const {view, docChanged, focusChanged, state: {doc}} = update;
-              //   if (docChanged) {
-              //     const str = doc.toString();
-              //     onChange(str);
-              //     setTo(cto => {
-              //       if (cto !== null) clearTimeout(cto);
-              //       if (str.length < 10) return null;
-              //       return setTimeout(onAutoComplete.bind(null, str), 150);
-              //     })
+              //   const {view, focusChanged} = update;
+              //   if (focusChanged === true && view.hasFocus === true) {
+              //     onFocus();
               //   }
+              //   //   const {view, docChanged, focusChanged, state: {doc}} = update;
+              //   //   if (docChanged) {
+              //   //     const str = doc.toString();
+              //   //     onChange(str);
+              //   //     setTo(cto => {
+              //   //       if (cto !== null) clearTimeout(cto);
+              //   //       if (str.length < 10) return null;
+              //   //       return setTimeout(onAutoComplete.bind(null, str), 150);
+              //   //     })
+              //   //   }
               // }),
             ],
           }),

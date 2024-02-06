@@ -6,7 +6,7 @@
 
 sampler::sampler() {}
 
-bool sampler::add(llama_context *ctx, llama_token t) {
+sampler_result sampler::add(llama_context *ctx, llama_token t) {
     const std::string t_str = llama_token_to_piece(ctx, t);
 
     const char *c = t_str.c_str();
@@ -21,11 +21,13 @@ bool sampler::add(llama_context *ctx, llama_token t) {
         b_tmp.add(*c);
         while (!b_tmp.empty()) {
             grammar_result r = g_tmp.eval(0, b_tmp);
-            if (r.code != GRAMMAR_RESULT_CONTINUE) {
-                // we've either hit a syntax error OR
-                // grammar finish.
-                // both are unexpected
-                return false;
+            switch (r.code) {
+                case GRAMMAR_RESULT_ERROR:
+                    return SAMPLER_RESULT_ERROR;
+                case GRAMMAR_RESULT_FINISH:
+                    return SAMPLER_RESULT_FINISH;
+                default:
+                    break;
             }
             if (r.n_rewind != 0) {
                 b_tmp.rewind(r.n_rewind);
@@ -38,7 +40,7 @@ bool sampler::add(llama_context *ctx, llama_token t) {
     g = g_tmp;
     b = b_tmp;
 
-    return true;
+    return SAMPLER_RESULT_CONTINUE;
 }
 
 struct token {

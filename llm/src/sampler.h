@@ -8,6 +8,14 @@
 #include "grammar/pgsql/pgsql.h"
 #include "llama.h"
 
+// clang-format off
+enum sampler_result {
+    SAMPLER_RESULT_ERROR,
+    SAMPLER_RESULT_CONTINUE,
+    SAMPLER_RESULT_FINISH,
+};
+// clang-format on
+
 class sampler {
    private:
     grammar_pgsql g;
@@ -17,7 +25,7 @@ class sampler {
     sampler();
 
     // location in the grammar
-    bool add(llama_context *ctx, llama_token t);
+    sampler_result add(llama_context *ctx, llama_token t);
     std::tuple<bool, bool, llama_token, std::string> get(llama_context *ctx);
 };
 
