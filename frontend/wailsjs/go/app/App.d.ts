@@ -14,6 +14,10 @@ export function Cfg_DbsUpdate(arg1:number,arg2:string,arg3:string):Promise<void>
 
 export function Cfg_GetSessionQueries(arg1:string):Promise<Array<app.SessionQuery>>;
 
+export function Cfg_LlmEnabledGet():Promise<boolean>;
+
+export function Cfg_LlmEnabledSet(arg1:boolean):Promise<void>;
+
 export function Cfg_SessionQueriesDelete(arg1:number):Promise<void>;
 
 export function Cfg_SessionQueriesInsert(arg1:string,arg2:string,arg3:string):Promise<number>;
@@ -38,8 +42,12 @@ export function Dbs_Query(arg1:string,arg2:string):Promise<app.Result>;
 
 export function Llm_Autocomplete(arg1:string,arg2:number,arg3:number,arg4:string):Promise<void>;
 
+export function Llm_Close():Promise<void>;
+
 export function Llm_Init():Promise<void>;
 
 export function Llm_Prime(arg1:number,arg2:string):Promise<void>;
 
 export function Llm_SetSchema(arg1:number,arg2:string):Promise<void>;
+
+export function Llm_StatusGet():Promise<boolean>;

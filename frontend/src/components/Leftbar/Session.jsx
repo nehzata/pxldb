@@ -14,8 +14,7 @@ const Session = ({id, title}) => {
     e => {
       dispatch({type: 'TABS-OPEN', id});
       // if (e.metaKey === true) {
-      //   const {pxl} = window;
-      //   pxl.createWindowWithSession(id);
+      //   open new window
       // } else {
       //   dispatch({type: 'TABS-OPEN', id});
       // }
@@ -39,7 +38,12 @@ const Session = ({id, title}) => {
   }, [setValue])
 
   const onSave = React.useCallback(e => {
-    Wails.Cfg_SessionsUpdate(id, value)
+    Wails.Cfg_SessionsUpdate(id, value);
+    dispatch({
+      type: 'SESSIONS-UPDATE',
+      id,
+      title: value,
+    });
     setEditing(false);
   }, [id, value, setEditing]);
 
@@ -50,25 +54,22 @@ const Session = ({id, title}) => {
 
   if (editing === true) {
     return (
-      <div className='-ml-1 flex flex-row justify-between items-center h-6'>
-        <div className='flex-grow flex-shrink'>
-          <input
-            type='text'
-            className='border rounded-l-md w-full focus:outline-none px-1'
-            value={value || ''}
-            onChange={onEdit}
-            onBlur={() => setEditing(false)}
-            autoFocus={true}
-          />
-        </div>
+      <form onSubmit={onSave} className='-ml-1 flex flex-row justify-between items-center h-6'>
+        <input
+          type='text'
+          className='flex-grow flex-shrink border rounded-l-md w-full focus:outline-none px-1 text-sm h-6'
+          value={value || ''}
+          onChange={onEdit}
+          onBlur={() => setEditing(false)}
+          autoFocus={true}
+        />
         <button
-          type='button'
+          type='submit'
           className='flex justify-center items-center rounded-r-md bg-black text-white h-6 w-6 flex-shrink-0'
-          onClick={onSave}
         >
           <Icons.Check size={14} stroke='currentColor' />
         </button>
-      </div>
+      </form>
     );
   }
 

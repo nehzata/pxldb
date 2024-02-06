@@ -7,27 +7,34 @@
 #include <string>
 
 model *m = NULL;
+bool shutdown = false;
+pthread_t id;
 
 int llm_init(const char *fp) {
     if (m != NULL) {
         return 1;
     }
 
+    shutdown = false;
     m = new model(fp, 0, 512, 8);
     return m->init();
 }
 
+void llm_close() {
+    shutdown = true;
+    pthread_join(id, NULL);
+    delete m;
+    m = NULL;
+}
+
 void *_run(void *params) {
-    while (true) {
+    while (!shutdown) {
         m->run();
     }
     return NULL;
 }
 
-void llm_run() {
-    pthread_t id;
-    pthread_create(&id, NULL, _run, NULL);
-}
+void llm_run() { pthread_create(&id, NULL, _run, NULL); }
 
 void llm_set_schema(int schema_id, const char *schema) {
     std::string s(schema);

@@ -2,7 +2,7 @@ import config from '../config.js';
 
 import cfg from './cfg';
 import dbs from './dbs';
-import loading from './loading';
+import llm from './llm';
 import misc from './misc';
 import sessions from './sessions';
 import tabs from './tabs';
@@ -33,7 +33,7 @@ const combineReducers = (reducers, verbose = false) =>
 export default combineReducers({
   cfg,
   dbs,
-  loading,
+  llm,
   misc,
   sessions,
   tabs,

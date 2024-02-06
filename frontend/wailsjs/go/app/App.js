@@ -26,6 +26,14 @@ export function Cfg_GetSessionQueries(arg1) {
   return window['go']['app']['App']['Cfg_GetSessionQueries'](arg1);
 }
 
+export function Cfg_LlmEnabledGet() {
+  return window['go']['app']['App']['Cfg_LlmEnabledGet']();
+}
+
+export function Cfg_LlmEnabledSet(arg1) {
+  return window['go']['app']['App']['Cfg_LlmEnabledSet'](arg1);
+}
+
 export function Cfg_SessionQueriesDelete(arg1) {
   return window['go']['app']['App']['Cfg_SessionQueriesDelete'](arg1);
 }
@@ -74,6 +82,10 @@ export function Llm_Autocomplete(arg1, arg2, arg3, arg4) {
   return window['go']['app']['App']['Llm_Autocomplete'](arg1, arg2, arg3, arg4);
 }
 
+export function Llm_Close() {
+  return window['go']['app']['App']['Llm_Close']();
+}
+
 export function Llm_Init() {
   return window['go']['app']['App']['Llm_Init']();
 }
@@ -84,4 +96,8 @@ export function Llm_Prime(arg1, arg2) {
 
 export function Llm_SetSchema(arg1, arg2) {
   return window['go']['app']['App']['Llm_SetSchema'](arg1, arg2);
+}
+
+export function Llm_StatusGet() {
+  return window['go']['app']['App']['Llm_StatusGet']();
 }

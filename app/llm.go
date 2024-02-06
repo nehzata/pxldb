@@ -38,7 +38,7 @@ var MODELS map[string]string = map[string]string{
 }
 var DEFAULT_MODEL = "mistral-7b-instruct"
 
-func (a *App) dl_init() {
+func (a *App) llm_init() {
 	a.modelState = MODEL_STATE_DOWNLOADING
 
 	modelPath, err := xdg.ConfigFile(fmt.Sprintf("PXLDB/%s", DEFAULT_MODEL))
@@ -63,7 +63,7 @@ Loop:
 		case <-t.C:
 			wails.EventsEmit(
 				a.ctx,
-				"llm-init",
+				"llm-status",
 				fmt.Sprintf(
 					`{"progress": %.2f, "received": %v, "total": %v}`,
 					100*resp.Progress(),
@@ -82,7 +82,7 @@ Loop:
 	// check for errors
 	if err := resp.Err(); err != nil {
 		fmt.Fprintf(os.Stderr, "Download failed: %v\n", err)
-		wails.EventsEmit(a.ctx, "llm-init", `{"error": true, "code": "ERROR_DOWNLOAD_FAILED"}`)
+		wails.EventsEmit(a.ctx, "llm-status", `{"error": true, "code": "ERROR_DOWNLOAD_FAILED"}`)
 		return
 	}
 
@@ -92,7 +92,7 @@ Loop:
 	defer C.free(unsafe.Pointer(mp))
 	res := C.llm_init(mp)
 	if res != 0 {
-		wails.EventsEmit(a.ctx, "llm-init", `{"error": true, "code": "ERROR_MODEL_LOAD_FAILED"}`)
+		wails.EventsEmit(a.ctx, "llm-status", `{"error": true, "code": "ERROR_MODEL_LOAD_FAILED"}`)
 		return
 	}
 
@@ -104,23 +104,43 @@ Loop:
 
 	C.llm_set_schema(C.int(0), p)
 
-	wails.EventsEmit(a.ctx, "llm-init", `{"loaded": true}`)
+	wails.EventsEmit(a.ctx, "llm-status", `{"loaded": true}`)
 
 	a.modelState = MODEL_STATE_RUNNING
+}
+
+func (a *App) llm_close() {
+	C.llm_close()
+	a.modelState = MODEL_STATE_IDLE
+	wails.EventsEmit(a.ctx, "llm-status", `{"loaded": false}`)
+}
+
+func (a *App) Llm_StatusGet() bool {
+	return a.modelState == MODEL_STATE_RUNNING
 }
 
 func (a *App) Llm_Init() {
 	if a.modelState != MODEL_STATE_IDLE {
 		if a.modelState == MODEL_STATE_RUNNING {
-			wails.EventsEmit(a.ctx, "llm-init", `{"loaded": true}`)
+			wails.EventsEmit(a.ctx, "llm-status", `{"loaded": true}`)
 		}
 		return
 	}
+	go a.llm_init()
+}
 
-	go a.dl_init()
+func (a *App) Llm_Close() {
+	if a.modelState != MODEL_STATE_RUNNING {
+		return
+	}
+	a.modelState = MODEL_STATE_CLOSING
+	go a.llm_close()
 }
 
 func (a *App) Llm_SetSchema(schemaId uint, schema string) {
+	if a.modelState != MODEL_STATE_RUNNING {
+		return
+	}
 	s := C.CString(schema)
 	defer C.free(unsafe.Pointer(s))
 
@@ -128,6 +148,9 @@ func (a *App) Llm_SetSchema(schemaId uint, schema string) {
 }
 
 func (a *App) Llm_Prime(schemaId uint, prompt string) {
+	if a.modelState != MODEL_STATE_RUNNING {
+		return
+	}
 	p := C.CString(prompt)
 	defer C.free(unsafe.Pointer(p))
 
@@ -151,6 +174,9 @@ func (a *App) Llm_Prime(schemaId uint, prompt string) {
 }
 
 func (a *App) Llm_Autocomplete(eventId string, reqId uint, schemaId uint, prompt string) {
+	if a.modelState != MODEL_STATE_RUNNING {
+		return
+	}
 	aPtr := gopointer.Save(a)
 	defer gopointer.Unref(aPtr)
 

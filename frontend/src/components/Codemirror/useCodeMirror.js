@@ -52,7 +52,7 @@ export default ({id, doc, keymaps, ref, shouldUseDarkColors, /*onFocus, onBlur,*
                 dialect: PostgreSQL,
                 // schema,
               }),
-              // autocompletion(),
+              autocompletion(),
               shouldUseDarkColors ? xcodeDark : xcodeLight,
               copilot({
                 onChange,
@@ -88,7 +88,6 @@ export default ({id, doc, keymaps, ref, shouldUseDarkColors, /*onFocus, onBlur,*
   }, [setView]);
 
   const onSuggestionAppend = React.useCallback((reqId, token) => {
-    // console.log(token);
     view.dispatch({
       effects: SuggestionEffect.of({id: reqId, text: token}),
     });

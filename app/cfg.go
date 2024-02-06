@@ -26,13 +26,13 @@ func (a *App) Cfg_WinBoundsGet() (WinBounds, error) {
 		if errors.Is(err, sql.ErrNoRows) {
 			return WinBounds{200, 200, 1024, 768}, nil
 		}
-		return WinBounds{}, nil
+		return WinBounds{}, err
 	}
 
 	var res WinBounds
 	err = json.Unmarshal([]byte(_winBounds), &res)
 	if err != nil {
-		return WinBounds{}, nil
+		return WinBounds{}, err
 	}
 	res.X = int(math.Max(float64(res.X), 20))
 	res.Y = int(math.Max(float64(res.Y), 20))
@@ -55,6 +55,39 @@ func (a *App) Cfg_WinBoundsSet(wb WinBounds) error {
 	err = a.cfg.KvStoreSet(context.Background(), database.KvStoreSetParams{
 		"win-bounds",
 		string(wbStr),
+	})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (a *App) Cfg_LlmEnabledGet() (bool, error) {
+	_enabled, err := a.cfg.KvStoreGet(context.Background(), "llm-enabled")
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return true, nil
+		}
+		return false, err
+	}
+	var res bool
+	err = json.Unmarshal([]byte(_enabled), &res)
+	if err != nil {
+		return false, err
+	}
+	return res, nil
+}
+
+func (a *App) Cfg_LlmEnabledSet(enabled bool) error {
+	enabledStr, err := json.Marshal(enabled)
+	if err != nil {
+		return err
+	}
+
+	err = a.cfg.KvStoreSet(context.Background(), database.KvStoreSetParams{
+		"llm-enabled",
+		string(enabledStr),
 	})
 	if err != nil {
 		return err

@@ -2,6 +2,7 @@ import React from 'react';
 import * as Icons from 'untitledui-js-base';
 
 import EditDB from '@pxl/components/EditDB';
+import LlmToggle from '@pxl/components/Llm/Toggle';
 import store from '@pxl/utils/store.js';
 
 import DB from './DB';
@@ -27,6 +28,7 @@ const Leftbar = () => {
         className='h-[40px] flex-grow-0 flex-shrink-0 flex flex-row justify-end items-center pr-2'
         style={{'--wails-draggable': 'drag'}}
       >
+        <LlmToggle />
         <button
           className='p-1 text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-600 hover:rounded-md'
           style={{'--wails-draggable': 'no-drag'}}

@@ -9,7 +9,15 @@
 #include "llama.h"
 #include "utils.h"
 
-model::~model() {}
+model::~model() {
+    if (current_task != NULL) {
+        delete current_task;
+    }
+    llama_batch_free(batch);
+    llama_free(ctx);
+    llama_free_model(m);
+    llama_backend_free();
+}
 
 model::model(std::string mpath, int n_ctx, int n_batch, int n_threads)
     : mpath(mpath), n_ctx(n_ctx), n_batch(n_batch), n_threads(n_threads), g_req_id(1), current_schema_id(0) {}

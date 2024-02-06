@@ -2,6 +2,7 @@ import React from 'react';
 import * as Icons from 'untitledui-js-base';
 
 import store from '@pxl/utils/store.js';
+import LlmToggle from '@pxl/components/Llm/Toggle';
 
 import Empty from './Empty';
 import Session from './Session';
@@ -48,13 +49,16 @@ const Body = () => {
           style={{'--wails-draggable': 'drag'}}
         >
           {!leftbarVisible && (
-            <button
-              className='ml-28 p-1 text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600 hover:rounded-md'
-              style={{'--wails-draggable': 'no-drag'}}
-              onClick={onToggleLeftbar}
-            >
-              <Icons.LayoutLeft size={20} stroke='currentColor' />
-            </button>
+            <div className='flex flex-row justify-start items-center ml-28'>
+              <LlmToggle />
+              <button
+                className='p-1 text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600 hover:rounded-md'
+                style={{'--wails-draggable': 'no-drag'}}
+                onClick={onToggleLeftbar}
+              >
+                <Icons.LayoutLeft size={20} stroke='currentColor' />
+              </button>
+            </div>
           )}
           <div
             className={leftbarVisible

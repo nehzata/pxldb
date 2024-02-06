@@ -6,6 +6,7 @@ extern "C" {
 #endif
 
 int llm_init(const char *fp);
+void llm_close();
 void llm_run();
 
 void llm_set_schema(int schema_id, const char *schema);
