@@ -70,6 +70,7 @@ static std::string KEYWORDS[] = {
   "BREADTH",
   "BTRIM",
   "BY",
+  "BYTEA",
   "C",
   "CACHE",
   "CALL",

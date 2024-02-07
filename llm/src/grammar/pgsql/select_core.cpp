@@ -4,7 +4,6 @@
 #include <spdlog/spdlog.h>
 
 #include "grammar/alternatives.h"
-#include "grammar/epsilon.h"
 #include "grammar/identifier.h"
 #include "grammar/identifier_ci.h"
 #include "grammar/list.h"
@@ -75,20 +74,21 @@ grammar_result grammar_pgsql_select_core::eval(uint depth, buffer &b) {
                   new grammar_identifier_ci("FROM"),
                   new grammar_ws(),
                   new grammar_pgsql_table_or_subquery(), // table name
-                  new grammar_alternatives({
-                    new grammar_one_or_more([](){
-                      return new grammar_list({
-                        new grammar_identifier(","),
-                        new grammar_zero_or_one(new grammar_ws()),
-                        new grammar_pgsql_table_or_subquery() // table name
-                      });
-                    }),
-                    new grammar_list({
-                      new grammar_ws(),
-                      new grammar_pgsql_join_clause()
-                    }),
-                    new grammar_epsilon()
-                  })
+                  new grammar_zero_or_one(
+                    new grammar_alternatives({
+                      new grammar_one_or_more([](){
+                        return new grammar_list({
+                          new grammar_identifier(","),
+                          new grammar_zero_or_one(new grammar_ws()),
+                          new grammar_pgsql_table_or_subquery() // table name
+                        });
+                      }),
+                      new grammar_list({
+                        new grammar_ws(),
+                        new grammar_pgsql_join_clause()
+                      })
+                    })
+                  )
                 })
               ),
               new grammar_zero_or_one(

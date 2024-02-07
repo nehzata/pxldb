@@ -30,11 +30,14 @@ import (
 )
 
 var MODELS map[string]string = map[string]string{
-	"phi-2":               "https://huggingface.co/nakcnx/phi-2-sql-gguf/resolve/main/phi-2-sql-Q5_K_M.gguf?download=true",
-	"phi-2-sql":           "https://huggingface.co/nakcnx/phi-2-sql-gguf/resolve/main/phi-2-sql-Q5_K_M.gguf?download=true",
-	"sqlcoder-7b":         "https://huggingface.co/TheBloke/sqlcoder-7B-GGUF/resolve/main/sqlcoder-7b.Q4_0.gguf?download=true",
-	"mistral-7b":          "https://huggingface.co/TheBloke/Mistral-7B-v0.1-GGUF/resolve/main/mistral-7b-v0.1.Q4_0.gguf?download=true",
-	"mistral-7b-instruct": "https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF/resolve/main/mistral-7b-instruct-v0.2.Q4_0.gguf?download=true",
+	"phi-2":                    "https://huggingface.co/nakcnx/phi-2-sql-gguf/resolve/main/phi-2-sql-Q5_K_M.gguf?download=true",
+	"phi-2-sql":                "https://huggingface.co/nakcnx/phi-2-sql-gguf/resolve/main/phi-2-sql-Q5_K_M.gguf?download=true",
+	"sqlcoder-7b":              "https://huggingface.co/TheBloke/sqlcoder-7B-GGUF/resolve/main/sqlcoder-7b.Q4_0.gguf?download=true",
+	"mistral-7b":               "https://huggingface.co/TheBloke/Mistral-7B-v0.1-GGUF/resolve/main/mistral-7b-v0.1.Q4_0.gguf?download=true",
+	"mistral-7b-instruct":      "https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF/resolve/main/mistral-7b-instruct-v0.2.Q4_0.gguf?download=true",
+	"mistral-7b-instruct-code": "https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-code-ft-GGUF/resolve/main/mistral-7b-instruct-v0.2-code-ft.Q4_0.gguf?download=true",
+	"deepseek-llm-7b-base":     "https://huggingface.co/TheBloke/deepseek-llm-7B-base-GGUF/resolve/main/deepseek-llm-7b-base.Q4_0.gguf?download=true",
+	"deepseek-coder-6.7b-base": "https://huggingface.co/TheBloke/deepseek-coder-6.7B-base-GGUF/resolve/main/deepseek-coder-6.7b-base.Q4_0.gguf?download=true",
 }
 var DEFAULT_MODEL = "mistral-7b-instruct"
 

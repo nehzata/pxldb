@@ -11,7 +11,7 @@ help:
 clean:
 	$(MAKE) -C llm clean
 	@rm -rf build/bin
-	@rm ggml-metal.metal
+	@rm -f ggml-metal.metal
 
 .PHONY: regen
 regen: $(patsubst %, %/.go-generate, $(REGEN_DIRS)) ## Regenerate all code.

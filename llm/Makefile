@@ -10,6 +10,7 @@ CXX_INCLUDES = -I src/ \
 	-I third_party/llama.cpp \
 	-I third_party/spdlog/include
 CXX_FLAGS = $(CXX_INCLUDES) \
+	-mmacosx-version-min=11.0 \
 	-D_XOPEN_SOURCE=600 -D_DARWIN_C_SOURCE -DNDEBUG \
 	-DGGML_USE_ACCELERATE -DACCELERATE_NEW_LAPACK \
 	-DACCELERATE_LAPACK_ILP64 -DGGML_USE_METAL \
@@ -42,13 +43,15 @@ help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: test
-test: libcatch2 $(SRC_OBJ) $(TEST_OBJ)
+test: bin/test libcatch2 $(SRC_OBJ) $(TEST_OBJ)
+	$(OUTDIR)/test
+
+bin/test: libcatch2 $(SRC_OBJ) $(TEST_OBJ)
 	mkdir -p $(OUTDIR)
 	$(CXX) \
 		-I third_party/Catch2/src -I third_party/Catch2/build/generated-includes \
 		$(CXX_FLAGS) $(LDFLAGS) -L third_party/Catch2/build/src -lCatch2 -lCatch2Main \
 		-o $(OUTDIR)/test $(SRC_OBJ) $(TEST_OBJ)
-	$(OUTDIR)/test
 
 libllama:
 	@make -C third_party/llama.cpp libllama.a

@@ -1,5 +1,5 @@
-#ifndef LLM_GRAMMAR_PGSQL_ORDERING_TERM_H
-#define LLM_GRAMMAR_PGSQL_ORDERING_TERM_H
+#ifndef LLM_GRAMMAR_PGSQL_ORDER_BY_H
+#define LLM_GRAMMAR_PGSQL_ORDER_BY_H
 
 #include "expr.h"
 #include "grammar/alternatives.h"
@@ -38,6 +38,29 @@ class grammar_pgsql_ordering_term : public grammar_list {
 
     virtual std::unique_ptr<grammar> clone() const override {
         return std::unique_ptr<grammar>(new grammar_pgsql_ordering_term(*this));
+    }
+};
+
+class grammar_pgsql_order_by : public grammar_list {
+   public:
+    virtual ~grammar_pgsql_order_by() {}
+    // clang-format off
+    grammar_pgsql_order_by() : grammar_list({
+      new grammar_identifier_ci("ORDER BY"),
+      new grammar_ws(),
+      new grammar_pgsql_ordering_term(),
+      new grammar_zero_or_many([](){
+        return new grammar_list({
+          new grammar_identifier(","),
+          new grammar_zero_or_one(new grammar_ws()),
+          new grammar_pgsql_ordering_term()
+        });
+      })
+    }) {}
+    // clang-format on
+
+    virtual std::unique_ptr<grammar> clone() const override {
+        return std::unique_ptr<grammar>(new grammar_pgsql_order_by(*this));
     }
 };
 

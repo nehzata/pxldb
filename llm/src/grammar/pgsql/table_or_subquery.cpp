@@ -5,7 +5,6 @@
 
 #include "expr.h"
 #include "grammar/alternatives.h"
-#include "grammar/epsilon.h"
 #include "grammar/identifier.h"
 #include "grammar/identifier_ci.h"
 #include "grammar/list.h"

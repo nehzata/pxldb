@@ -42,7 +42,7 @@ TEST_CASE("pgsql") {
     }
 
     SECTION("SELECT users.id AS user_id FROM users") {
-        spdlog::set_level(spdlog::level::debug);
+        // spdlog::set_level(spdlog::level::debug);
         grammar_pgsql g;
         std::string in = "SELECT users.id AS user_id FROM users;";
         REQUIRE(run(g, in) == true);
@@ -80,7 +80,7 @@ TEST_CASE("pgsql") {
         REQUIRE(run(g, in) == true);
     }
 
-    SECTION("error") {
+    SECTION("join complicated") {
         // spdlog::set_level(spdlog::level::debug);
         grammar_pgsql g;
         std::string in =
@@ -90,5 +90,36 @@ TEST_CASE("pgsql") {
             "WHERE r.name = 'thanksd' AND d.dependency_type = 'GH'";
         REQUIRE(run(g, in) == true);
     }
+
+    // SECTION("error") {
+    //     spdlog::set_level(spdlog::level::debug);
+    //     grammar_pgsql g;
+    //     std::string in = "SELECT MAX(";
+    //     REQUIRE(run(g, in) == true);
+    // }
+
+    // SECTION("error") {
+    //     spdlog::set_level(spdlog::level::debug);
+    //     grammar_pgsql g;
+    //     std::string in =
+    //         "SELECT id"
+    //         "FROM users "
+    //         "WHERE r.name = (SELECT MAX(";
+    //     REQUIRE(run(g, in) == true);
+    // }
+
+    // SECTION("error") {
+    //     spdlog::set_level(spdlog::level::debug);
+    //     grammar_pgsql g;
+    //     std::string in =
+    //         "-- join users and user_keys  table based on user_id\n"
+    //         " SELECT u.id, u.email, u.username, uk.key\n"
+    //         " FROM users u\n"
+    //         " INNER JOIN user_keys uk ON u.id = uk.user_id\n"
+    //         " -- filter active keys\n"
+    //         " WHERE";
+    //     REQUIRE(run(g, in) == true);
+    // }
+
     spdlog::set_level(spdlog::level::off);
 }

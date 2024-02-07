@@ -24,7 +24,7 @@ grammar_result grammar_zero_or_one::eval(uint depth, buffer &b) {
     spdlog::debug("{} zero_or_one: {},{} n_chars:{}", std::string(depth, ' '), int(r.code), r.n_rewind, n_chars);
     switch (r.code) {
         case GRAMMAR_RESULT_ERROR:
-            return {GRAMMAR_RESULT_FINISH, n_chars + 1};
+            return {GRAMMAR_RESULT_FINISH, n_chars + r.n_rewind};
         case GRAMMAR_RESULT_CONTINUE:
         case GRAMMAR_RESULT_FINISH:
             n_chars -= r.n_rewind;

@@ -17,16 +17,17 @@ bool run(grammar &g, std::string &in) {
     }
 
     // drain the remainder of the grammar state
-    for (int i = 0; i < 100; i++) {
+    while (true) {
         grammar_result r = g.eval(0, b);
         if (r.n_rewind != 0) {
             b.rewind(r.n_rewind);
         }
         if (r.code == GRAMMAR_RESULT_FINISH) {
-            return true;
-        } else if (r.code == GRAMMAR_RESULT_ERROR) {
+            return b.empty();
+        } else if (r.code != GRAMMAR_RESULT_CONTINUE) {
             return false;
         }
     }
+
     return false;
 }

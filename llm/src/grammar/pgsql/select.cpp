@@ -5,7 +5,6 @@
 
 #include "cte.h"
 #include "grammar/alternatives.h"
-#include "grammar/epsilon.h"
 #include "grammar/identifier.h"
 #include "grammar/identifier_ci.h"
 #include "grammar/list.h"
@@ -13,7 +12,7 @@
 #include "grammar/ws.h"
 #include "grammar/zero_or_many.h"
 #include "grammar/zero_or_one.h"
-#include "ordering_term.h"
+#include "order_by.h"
 #include "select_core.h"
 
 grammar_pgsql_select::~grammar_pgsql_select() {}
@@ -57,16 +56,7 @@ grammar_result grammar_pgsql_select::eval(uint depth, buffer &b) {
                 new grammar_zero_or_one(
                   new grammar_list({
                     new grammar_ws(),
-                    new grammar_identifier_ci("ORDER BY"),
-                    new grammar_ws(),
-                    new grammar_pgsql_ordering_term(),
-                    new grammar_zero_or_many([](){
-                      return new grammar_list({
-                        new grammar_identifier(","),
-                        new grammar_zero_or_one(new grammar_ws()),
-                        new grammar_pgsql_ordering_term()
-                      });
-                    })
+                    new grammar_pgsql_order_by(),
                   })
                 ),
                 new grammar_zero_or_one(

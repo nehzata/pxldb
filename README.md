@@ -41,6 +41,9 @@ xcrun notarytool store-credentials "notarytool-password" --apple-id <APPLE_ID_EM
 - <s>autocomplete integration</s>
 - grammar updates
   - <s>case insensitive</s>
+  - type casts
+  - range & between expressions
+  - function expressions
   - update grammar
   - insert grammar
   - delete grammar
