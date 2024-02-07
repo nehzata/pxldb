@@ -38,7 +38,7 @@ const Table = ({dsn, sId, name, cols}) => {
       res: _res,
     });
 
-  }, [name]);
+  }, [name, sId]);
 
   // const onInsert = React.useCallback(async () => {
   //   const {pxl} = window;
