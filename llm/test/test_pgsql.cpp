@@ -91,6 +91,13 @@ TEST_CASE("pgsql") {
         REQUIRE(run(g, in) == true);
     }
 
+    SECTION("functions") {
+        // spdlog::set_level(spdlog::level::debug);
+        grammar_pgsql g;
+        std::string in = "SELECT MAX(last_ts) FROM users";
+        REQUIRE(run(g, in) == true);
+    }
+
     SECTION("error") {
         // spdlog::set_level(spdlog::level::debug);
         grammar_pgsql g;
@@ -99,7 +106,7 @@ TEST_CASE("pgsql") {
     }
 
     SECTION("error") {
-        spdlog::set_level(spdlog::level::debug);
+        // spdlog::set_level(spdlog::level::debug);
         grammar_pgsql g;
         std::string in =
             "-- join users and user_keys  table based on user_id\n"
@@ -108,7 +115,7 @@ TEST_CASE("pgsql") {
             " INNER JOIN user_keys uk ON u.id = uk.user_id\n"
             " -- filter active keys\n"
             " WHERE";
-        REQUIRE(run(g, in) == true);
+        REQUIRE(run(g, in) != true);
     }
 
     spdlog::set_level(spdlog::level::off);

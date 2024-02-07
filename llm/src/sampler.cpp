@@ -25,7 +25,7 @@ sampler_result sampler::add(llama_context *ctx, llama_token t) {
                 case GRAMMAR_RESULT_ERROR:
                     return SAMPLER_RESULT_ERROR;
                 case GRAMMAR_RESULT_FINISH:
-                    return SAMPLER_RESULT_FINISH;
+                    return b.empty() ? SAMPLER_RESULT_FINISH : SAMPLER_RESULT_CONTINUE;
                 default:
                     break;
             }
@@ -80,15 +80,14 @@ std::tuple<bool, bool, llama_token, std::string> sampler::get(llama_context *ctx
             b_tmp.add(*c);
             while (!b_tmp.empty()) {
                 grammar_result_code r = g_tmp.eval(0, b_tmp);
-                if (r == GRAMMAR_RESULT_ERROR) {
-                    goto next;
-                }
-                // if (r.n_rewind != 0) {
-                //     b_tmp.rewind(r.n_rewind);
-                // }
-                if (r != GRAMMAR_RESULT_CONTINUE) {
-                    finished = r == GRAMMAR_RESULT_FINISH;
-                    goto end;
+                switch (r) {
+                    case GRAMMAR_RESULT_ERROR:
+                        goto next;
+                    case GRAMMAR_RESULT_FINISH:
+                        finished = b.empty();
+                        goto end;
+                    default:
+                        break;
                 }
             }
             c++;

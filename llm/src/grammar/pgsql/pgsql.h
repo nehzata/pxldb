@@ -23,7 +23,7 @@ class grammar_pgsql : public grammar_pgsql_comment {
         new grammar_zero_or_one(
           new grammar_list({
             new grammar_zero_or_one(new grammar_ws()),
-            new grammar_identifier(";")
+            new grammar_zero_or_one(new grammar_identifier(";"))
           })
         )
       })
