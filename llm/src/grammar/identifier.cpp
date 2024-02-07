@@ -28,23 +28,28 @@ grammar_identifier &grammar_identifier::operator=(const grammar_identifier &src)
     return *this;
 }
 
-grammar_result grammar_identifier::eval(uint depth, buffer &b) {
+grammar_result_code grammar_identifier::eval(uint depth, buffer &b) {
     if (identifier.length() && it != identifier.end()) {
         const std::pair<bool, char> v = b.next();
         if (!v.first) {
             spdlog::debug("{} identifier: {},null", std::string(depth, ' '), identifier);
-            return {it == identifier.begin() ? GRAMMAR_RESULT_ERROR : GRAMMAR_RESULT_FINISH, 0};
+            // return {it == identifier.begin() ? GRAMMAR_RESULT_ERROR : GRAMMAR_RESULT_FINISH, 0};
+            return it == identifier.begin() ? GRAMMAR_RESULT_ERROR : GRAMMAR_RESULT_FINISH;
         }
 
         const char c = v.second;
         spdlog::debug("{} identifier: {}:{},{}", std::string(depth, ' '), identifier, *it, c);
         if (c == *it) {
             if (++it == identifier.end()) {
-                return {GRAMMAR_RESULT_FINISH, 0};
+                // return {GRAMMAR_RESULT_FINISH, 0};
+                return GRAMMAR_RESULT_FINISH;
             }
-            return {GRAMMAR_RESULT_CONTINUE, 0};
+            // return {GRAMMAR_RESULT_CONTINUE, 0};
+            return GRAMMAR_RESULT_CONTINUE;
         }
-        return {GRAMMAR_RESULT_ERROR, 0};
+        // return {GRAMMAR_RESULT_ERROR, 0};
+        return GRAMMAR_RESULT_ERROR;
     }
-    return {GRAMMAR_RESULT_ERROR, 0};
+    // return {GRAMMAR_RESULT_ERROR, 0};
+    return GRAMMAR_RESULT_ERROR;
 }

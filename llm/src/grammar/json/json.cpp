@@ -11,7 +11,7 @@ grammar_json::~grammar_json() {}
 
 grammar_json::grammar_json() {}
 
-grammar_result grammar_json::eval(uint depth, buffer &b) {
+grammar_result_code grammar_json::eval(uint depth, buffer &b) {
     if (!g) {
         // clang-format off
         g = std::unique_ptr<grammar>(

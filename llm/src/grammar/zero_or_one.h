@@ -16,7 +16,7 @@ class grammar_zero_or_one : public grammar {
     grammar_zero_or_one(const grammar_zero_or_one &);
     grammar_zero_or_one &operator=(const grammar_zero_or_one &);
 
-    virtual grammar_result eval(unsigned int depth, buffer &b) override;
+    virtual grammar_result_code eval(unsigned int depth, buffer &b) override;
 
     virtual std::unique_ptr<grammar> clone() const override {
         return std::unique_ptr<grammar>(new grammar_zero_or_one(*this));

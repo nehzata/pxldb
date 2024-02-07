@@ -17,7 +17,7 @@ class grammar_zero_or_many : public grammar {
     grammar_zero_or_many(const grammar_zero_or_many &);
     grammar_zero_or_many &operator=(const grammar_zero_or_many &);
 
-    virtual grammar_result eval(uint depth, buffer &b) override;
+    virtual grammar_result_code eval(uint depth, buffer &b) override;
 
     virtual std::unique_ptr<grammar> clone() const override {
         return std::unique_ptr<grammar>(new grammar_zero_or_many(*this));

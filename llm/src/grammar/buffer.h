@@ -26,26 +26,24 @@ class buffer {
         return *this;
     }
 
+    size_t pos() { return n; }
+
     bool empty() { return s.size() - n == 0; }
 
     void add(const char c) {
         // printf("add(%c)\n", c);
         s.push_back(c);
     }
+
     std::pair<bool, char> next() {
         if (n >= s.size()) {
             return std::pair<bool, char>(false, '\0');
         }
         const char c = s[n++];
-        // printf("next = %c\n", c);
         return std::pair<bool, char>(true, c);
     }
-    void rewind(size_t _n) {
-        // print();
-        // printf("rewind(%lu)\n", _n);
-        n -= _n;
-        // print();
-    }
+
+    void rewind(size_t _n) { n -= _n; }
 
     void print() {
         std::string tmp;

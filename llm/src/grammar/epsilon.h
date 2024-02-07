@@ -10,9 +10,10 @@ class grammar_epsilon : public grammar {
     virtual ~grammar_epsilon() {}
     grammar_epsilon() {}
 
-    grammar_result eval(uint depth, buffer &) override {
+    grammar_result_code eval(uint depth, buffer &) override {
         spdlog::debug("{} epsilon", std::string(depth, ' '));
-        return {GRAMMAR_RESULT_FINISH, 0};
+        // return {GRAMMAR_RESULT_FINISH, 0};
+        return GRAMMAR_RESULT_FINISH;
     }
 
     virtual std::unique_ptr<grammar> clone() const override {

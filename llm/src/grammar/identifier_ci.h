@@ -18,7 +18,7 @@ class grammar_identifier_ci : public grammar {
     grammar_identifier_ci(const grammar_identifier_ci &);
     grammar_identifier_ci &operator=(const grammar_identifier_ci &);
 
-    virtual grammar_result eval(uint depth, buffer &b) override;
+    virtual grammar_result_code eval(uint depth, buffer &b) override;
 
     virtual std::unique_ptr<grammar> clone() const override {
         return std::unique_ptr<grammar>(new grammar_identifier_ci(*this));

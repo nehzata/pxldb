@@ -19,7 +19,7 @@ class grammar_max_n : public grammar {
     grammar_max_n(const grammar_max_n &);
     grammar_max_n &operator=(const grammar_max_n &);
 
-    virtual grammar_result eval(uint depth, buffer &b) override;
+    virtual grammar_result_code eval(uint depth, buffer &b) override;
 
     virtual std::unique_ptr<grammar> clone() const override {
         return std::unique_ptr<grammar>(new grammar_max_n(*this));

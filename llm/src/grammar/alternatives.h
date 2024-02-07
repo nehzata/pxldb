@@ -12,7 +12,7 @@ class grammar_alternatives : public grammar {
     std::list<std::unique_ptr<grammar>> list;
     std::list<std::unique_ptr<grammar>>::iterator it;
     uint idx;
-    size_t n_char;
+    size_t n_chars;
 
    public:
     virtual ~grammar_alternatives();
@@ -20,7 +20,7 @@ class grammar_alternatives : public grammar {
     grammar_alternatives(const grammar_alternatives &);
     grammar_alternatives &operator=(const grammar_alternatives &);
 
-    virtual grammar_result eval(uint depth, buffer &b) override;
+    virtual grammar_result_code eval(uint depth, buffer &b) override;
 
     virtual std::unique_ptr<grammar> clone() const override {
         return std::unique_ptr<grammar>(new grammar_alternatives(*this));

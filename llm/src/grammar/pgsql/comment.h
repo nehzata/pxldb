@@ -28,14 +28,15 @@ class grammar_pgsql_comment : public grammar {
     virtual ~grammar_pgsql_comment() {}
     grammar_pgsql_comment(grammar *g) : state(GRAMMAR_PGSQL_COMMENT_STATE_IDLE), g(std::unique_ptr<grammar>(g)) {}
 
-    virtual grammar_result eval(uint depth, buffer &b) override {
+    virtual grammar_result_code eval(uint depth, buffer &b) override {
         const std::pair<bool, char> v = b.next();
         if (!v.first) {
             spdlog::debug("{} pgsql_comment: {},null", std::string(depth, ' '), int(state));
             if (state == GRAMMAR_PGSQL_COMMENT_STATE_IDLE) {
                 return g->eval(depth, b);
             }
-            return {GRAMMAR_RESULT_FINISH, 0};
+            // return {GRAMMAR_RESULT_FINISH, 0};
+            return GRAMMAR_RESULT_FINISH;
         }
 
         const char c = v.second;
@@ -44,14 +45,16 @@ class grammar_pgsql_comment : public grammar {
             case GRAMMAR_PGSQL_COMMENT_STATE_IDLE:
                 if (c == '-') {
                     state = GRAMMAR_PGSQL_COMMENT_STATE_DASH;
-                    return {GRAMMAR_RESULT_CONTINUE, 0};
+                    // return {GRAMMAR_RESULT_CONTINUE, 0};
+                    return GRAMMAR_RESULT_CONTINUE;
                 }
                 b.rewind(1);
                 break;
             case GRAMMAR_PGSQL_COMMENT_STATE_DASH:
                 if (c == '-') {
                     state = GRAMMAR_PGSQL_COMMENT_STATE_COMMENTING;
-                    return {GRAMMAR_RESULT_CONTINUE, 0};
+                    // return {GRAMMAR_RESULT_CONTINUE, 0};
+                    return GRAMMAR_RESULT_CONTINUE;
                 }
                 state = GRAMMAR_PGSQL_COMMENT_STATE_IDLE;
                 b.rewind(2);
@@ -60,10 +63,12 @@ class grammar_pgsql_comment : public grammar {
                 if (c == '\n') {
                     state = GRAMMAR_PGSQL_COMMENT_STATE_NEW_LINE;
                 }
-                return {GRAMMAR_RESULT_CONTINUE, 0};
+                // return {GRAMMAR_RESULT_CONTINUE, 0};
+                return GRAMMAR_RESULT_CONTINUE;
             case GRAMMAR_PGSQL_COMMENT_STATE_NEW_LINE:
                 if (c == '\n') {
-                    return {GRAMMAR_RESULT_CONTINUE, 0};
+                    // return {GRAMMAR_RESULT_CONTINUE, 0};
+                    return GRAMMAR_RESULT_CONTINUE;
                 }
                 state = GRAMMAR_PGSQL_COMMENT_STATE_IDLE;
                 b.rewind(1);

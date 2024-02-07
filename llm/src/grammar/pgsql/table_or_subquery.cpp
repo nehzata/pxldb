@@ -18,7 +18,7 @@ grammar_pgsql_table_or_subquery::~grammar_pgsql_table_or_subquery() {}
 
 grammar_pgsql_table_or_subquery::grammar_pgsql_table_or_subquery() {}
 
-grammar_result grammar_pgsql_table_or_subquery::eval(uint depth, buffer &b) {
+grammar_result_code grammar_pgsql_table_or_subquery::eval(uint depth, buffer &b) {
     if (!g) {
         // clang-format off
         g = std::unique_ptr<grammar>(
@@ -88,8 +88,8 @@ grammar_result grammar_pgsql_table_or_subquery::eval(uint depth, buffer &b) {
         );
         // clang-format on
     }
-    grammar_result r = g->eval(depth + 1, b);
-    spdlog::debug("{} pgsql_table_or_subquery: {},{}", std::string(depth, ' '), int(r.code), r.n_rewind);
+    grammar_result_code r = g->eval(depth + 1, b);
+    spdlog::debug("{} pgsql_table_or_subquery: {}", std::string(depth, ' '), int(r));
     return r;
 }
 

@@ -43,7 +43,7 @@ grammar_pgsql_select_core::~grammar_pgsql_select_core() {}
 
 grammar_pgsql_select_core::grammar_pgsql_select_core() {}
 
-grammar_result grammar_pgsql_select_core::eval(uint depth, buffer &b) {
+grammar_result_code grammar_pgsql_select_core::eval(uint depth, buffer &b) {
     if (!g) {
         // clang-format off
         g = std::unique_ptr<grammar>(
@@ -99,9 +99,6 @@ grammar_result grammar_pgsql_select_core::eval(uint depth, buffer &b) {
                   new grammar_pgsql_expr()
                 })
               ),
-              // new grammar_zero_or_one(
-              //   new grammar_identifier(";")
-              // )
             }),
             new grammar_list({
               new grammar_identifier_ci("VALUES"),
@@ -119,8 +116,8 @@ grammar_result grammar_pgsql_select_core::eval(uint depth, buffer &b) {
         );
         // clang-format on
     }
-    grammar_result r = g->eval(depth + 1, b);
-    spdlog::debug("{} pgsql_select_core: {},{}", std::string(depth, ' '), int(r.code), r.n_rewind);
+    grammar_result_code r = g->eval(depth + 1, b);
+    spdlog::debug("{} pgsql_select_core: {}", std::string(depth, ' '), int(r));
     return r;
 }
 

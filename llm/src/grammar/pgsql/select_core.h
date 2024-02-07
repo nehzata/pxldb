@@ -13,7 +13,7 @@ class grammar_pgsql_select_core : public grammar {
     virtual ~grammar_pgsql_select_core();
     grammar_pgsql_select_core();
 
-    virtual grammar_result eval(uint depth, buffer &b) override;
+    virtual grammar_result_code eval(uint depth, buffer &b) override;
 
     grammar_pgsql_select_core(const grammar_pgsql_select_core &);
     grammar_pgsql_select_core &operator=(const grammar_pgsql_select_core &);

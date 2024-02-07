@@ -7,7 +7,7 @@
 
 TEST_CASE("pgsql_expr") {
     SECTION("expr basic") {
-        spdlog::set_level(spdlog::level::debug);
+        // spdlog::set_level(spdlog::level::debug);
         grammar_pgsql_expr g;
         std::string in = "r.name = 'thanksd'";
         REQUIRE(run(g, in) == true);
@@ -44,7 +44,7 @@ TEST_CASE("pgsql_expr") {
     // }
 
     SECTION("error") {
-        spdlog::set_level(spdlog::level::debug);
+        // spdlog::set_level(spdlog::level::debug);
         grammar_pgsql_expr g;
         std::string in = "tmp = (SELECT MAX(";
         REQUIRE(run(g, in) != true);

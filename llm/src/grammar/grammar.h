@@ -17,10 +17,10 @@ enum grammar_result_code {
 };
 // clang-format on
 
-struct grammar_result {
-    grammar_result_code code;
-    size_t n_rewind;
-};
+// struct grammar_result {
+//     grammar_result_code code;
+//     size_t n_consumed;
+// };
 
 class grammar {
    public:
@@ -28,7 +28,7 @@ class grammar {
 
    public:
     virtual ~grammar() {}
-    virtual grammar_result eval(uint depth, buffer &b) = 0;
+    virtual grammar_result_code eval(uint depth, buffer &b) = 0;
 
     virtual std::unique_ptr<grammar> clone() const = 0;
 };

@@ -27,7 +27,7 @@ class grammar_pgsql_expr_dash : public grammar {
     virtual ~grammar_pgsql_expr_dash() {}
     grammar_pgsql_expr_dash() {}
 
-    virtual grammar_result eval(uint depth, buffer &b) override {
+    virtual grammar_result_code eval(uint depth, buffer &b) override {
         if (!g) {
             // clang-format off
             g = std::unique_ptr<grammar>(
@@ -205,7 +205,7 @@ grammar_pgsql_expr::~grammar_pgsql_expr() {}
 
 grammar_pgsql_expr::grammar_pgsql_expr() {}
 
-grammar_result grammar_pgsql_expr::eval(uint depth, buffer &b) {
+grammar_result_code grammar_pgsql_expr::eval(uint depth, buffer &b) {
     if (!g) {
         // clang-format off
         g = std::unique_ptr<grammar>(
@@ -333,8 +333,8 @@ grammar_result grammar_pgsql_expr::eval(uint depth, buffer &b) {
         );
         // clang-format on
     }
-    grammar_result r = g->eval(depth + 1, b);
-    spdlog::debug("{} pgsql_expr: {},{}", std::string(depth, ' '), int(r.code), r.n_rewind);
+    grammar_result_code r = g->eval(depth + 1, b);
+    spdlog::debug("{} pgsql_expr: {}", std::string(depth, ' '), int(r));
     return r;
     // return g->eval(depth + 1, b);
 }

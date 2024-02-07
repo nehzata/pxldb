@@ -13,7 +13,7 @@ class grammar_pgsql_table_or_subquery : public grammar {
     virtual ~grammar_pgsql_table_or_subquery();
     grammar_pgsql_table_or_subquery();
 
-    virtual grammar_result eval(uint depth, buffer &b) override;
+    virtual grammar_result_code eval(uint depth, buffer &b) override;
 
     grammar_pgsql_table_or_subquery(const grammar_pgsql_table_or_subquery &);
     grammar_pgsql_table_or_subquery &operator=(const grammar_pgsql_table_or_subquery &);

@@ -20,8 +20,8 @@ sampler_result sampler::add(llama_context *ctx, llama_token t) {
     while (*c != 0) {
         b_tmp.add(*c);
         while (!b_tmp.empty()) {
-            grammar_result r = g_tmp.eval(0, b_tmp);
-            switch (r.code) {
+            grammar_result_code r = g_tmp.eval(0, b_tmp);
+            switch (r) {
                 case GRAMMAR_RESULT_ERROR:
                     return SAMPLER_RESULT_ERROR;
                 case GRAMMAR_RESULT_FINISH:
@@ -29,9 +29,9 @@ sampler_result sampler::add(llama_context *ctx, llama_token t) {
                 default:
                     break;
             }
-            if (r.n_rewind != 0) {
-                b_tmp.rewind(r.n_rewind);
-            }
+            // if (r.n_rewind != 0) {
+            //     b_tmp.rewind(r.n_rewind);
+            // }
         }
         c++;
     }
@@ -79,15 +79,15 @@ std::tuple<bool, bool, llama_token, std::string> sampler::get(llama_context *ctx
         while (*c != 0) {
             b_tmp.add(*c);
             while (!b_tmp.empty()) {
-                grammar_result r = g_tmp.eval(0, b_tmp);
-                if (r.code == GRAMMAR_RESULT_ERROR) {
+                grammar_result_code r = g_tmp.eval(0, b_tmp);
+                if (r == GRAMMAR_RESULT_ERROR) {
                     goto next;
                 }
-                if (r.n_rewind != 0) {
-                    b_tmp.rewind(r.n_rewind);
-                }
-                if (r.code != GRAMMAR_RESULT_CONTINUE) {
-                    finished = r.code == GRAMMAR_RESULT_FINISH;
+                // if (r.n_rewind != 0) {
+                //     b_tmp.rewind(r.n_rewind);
+                // }
+                if (r != GRAMMAR_RESULT_CONTINUE) {
+                    finished = r == GRAMMAR_RESULT_FINISH;
                     goto end;
                 }
             }

@@ -18,7 +18,7 @@ class grammar_list : public grammar {
     grammar_list(const grammar_list &);
     grammar_list &operator=(const grammar_list &);
 
-    virtual grammar_result eval(uint depth, buffer &b) override;
+    virtual grammar_result_code eval(uint depth, buffer &b) override;
 
     virtual std::unique_ptr<grammar> clone() const override {
         return std::unique_ptr<grammar>(new grammar_list(*this));
