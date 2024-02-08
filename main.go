@@ -19,7 +19,7 @@ func main() {
 
 	// Create application with options
 	err := wails.Run(&options.App{
-		Title:       "PXL DB",
+		Title:       "PXLDB",
 		Width:       1024,
 		Height:      768,
 		StartHidden: true,
@@ -36,7 +36,7 @@ func main() {
 		Mac: &mac.Options{
 			TitleBar: mac.TitleBarHiddenInset(),
 			About: &mac.AboutInfo{
-				Title:   "PXL DB",
+				Title:   "PXLDB",
 				Message: "© 2024 thanks.dev",
 			},
 		},
