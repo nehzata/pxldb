@@ -24,9 +24,9 @@ const ResultCell = ({v, isStale}) => {
 
   return (
     <td valign='top'>
-      <div className='relative px-2 group'>
+      <div className='relative group px-2'>
         <div
-          className='max-w-2xl overflow-scroll whitespace-nowrap'
+          className='max-w-2xl overflow-scroll whitespace-nowrap pr-4'
           onClick={onCopy.bind(null, vVal)}
         >
           {isExpanded ? vVal : vStr}

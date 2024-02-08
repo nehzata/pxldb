@@ -86,8 +86,9 @@ const ResultRows = ({onChangeView, onExport, id, error = null, numRows = 0, colu
               <thead>
                 <tr className='border-b border-divider'>
                   {columns.map((c, i) =>
-                    <td className='font-bold px-2' key={i}>{c}</td>
+                    <td className='font-bold px-2 whitespace-nowrap' key={i}>{c}</td>
                   )}
+                  <td className='w-full' />
                 </tr>
               </thead>
             )}
@@ -97,11 +98,13 @@ const ResultRows = ({onChangeView, onExport, id, error = null, numRows = 0, colu
                   <td colSpan={columns.length}>
                     ({numRows} rows)
                   </td>
+                  <td className='w-full' />
                 </tr>
               )}
               {displayRows.map((r, i) =>
                 <tr className='border-b border-divider last:border-none' key={i}>
                   {r.map((v, j) => <ResultCell v={v} isStale={isStale} key={j} />)}
+                  <td className='w-full' />
                 </tr>
               )}
             </tbody>
