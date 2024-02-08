@@ -38,6 +38,7 @@ xcrun notarytool store-credentials "notarytool-password" --apple-id <APPLE_ID_EM
 ## TODO
 - <s>rename sessions</s>
 - fuzzy search
+- anonymous usage tracking
 - <s>autocomplete integration</s>
 - grammar updates
   - <s>case insensitive</s>

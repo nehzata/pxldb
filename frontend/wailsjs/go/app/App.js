@@ -109,3 +109,7 @@ export function Llm_SetSchema(arg1, arg2) {
 export function Llm_StatusGet() {
   return window['go']['app']['App']['Llm_StatusGet']();
 }
+
+export function Utils_ExportRows(arg1, arg2) {
+  return window['go']['app']['App']['Utils_ExportRows'](arg1, arg2);
+}

@@ -12,6 +12,7 @@ require (
 	github.com/mattn/go-pointer v0.0.1
 	github.com/mattn/go-sqlite3 v1.14.21
 	github.com/pressly/goose/v3 v3.18.0
+	github.com/shopspring/decimal v1.3.1
 	github.com/wailsapp/wails/v2 v2.7.1
 )
 

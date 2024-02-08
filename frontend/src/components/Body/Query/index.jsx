@@ -12,10 +12,12 @@ import ResultRows from './ResultRows';
 import ResultPlan from './ResultPlan';
 
 const Query = ({
-  dbId,
-  dsn,
-  schema,
-  sId,
+  db,
+  session,
+  // dbId,
+  // dsn,
+  // schema,
+  // sId,
   id,
   qry = '',
   res = null,
@@ -39,17 +41,17 @@ const Query = ({
         dispatch({
           type: 'SESSION-QUERIES-SET-LOADING',
           id: _id,
-          sId,
+          sId: session.id,
           isLoading: true,
         });
       }
-      const res = await Wails.Dbs_Query(dsn, q);
+      const res = await Wails.Dbs_Query(db.dsn, q);
       const resStale = JSON.stringify({
         ...res,
         rows: res.rows === null ? null : res.rows.slice(0, 5),
       });
       if (id === null) {
-        _id = await Wails.Cfg_SessionQueriesInsert(sId, q, resStale);
+        _id = await Wails.Cfg_SessionQueriesInsert(session.id, q, resStale);
       } else {
         await Wails.Cfg_SessionQueriesUpdateRes(id, q, resStale);
       }
@@ -57,14 +59,14 @@ const Query = ({
         {
           type: 'SESSION-QUERIES-UPDATE',
           id: _id,
-          sId,
+          sId: session.id,
           qry: q,
           res,
         },
         {
           type: 'SESSION-QUERIES-SET-LOADING',
           id: _id,
-          sId,
+          sId: session.id,
           isLoading: false,
         },
       ]);
@@ -73,7 +75,7 @@ const Query = ({
     } finally {
       setLoading(false);
     }
-  }, [id, sId]);
+  }, [id, session.id]);
 
   const explainAnalyze = React.useCallback(async (mode, qry) => {
     if (id === null) return;
@@ -84,7 +86,7 @@ const Query = ({
         dispatch({
           type: 'SESSION-QUERIES-SET-LOADING',
           id: _id,
-          sId,
+          sId: session.id,
           isLoading: true,
         });
       }
@@ -95,7 +97,7 @@ const Query = ({
       ]
         .filter(f => f !== undefined)
         .join(' ');
-      const res = await Wails.Dbs_Query(dsn, q);
+      const res = await Wails.Dbs_Query(db.dsn, q);
       const resStale = JSON.stringify({
         ...res,
         rows: res.rows === null ? null : res.rows.slice(0, 5),
@@ -109,14 +111,14 @@ const Query = ({
         {
           type: 'SESSION-QUERIES-UPDATE',
           id: _id,
-          sId,
+          sId: session.id,
           qry,
           [mode]: res,
         },
         {
           type: 'SESSION-QUERIES-SET-LOADING',
           id: _id,
-          sId,
+          sId: session.id,
           isLoading: false,
         },
       ]);
@@ -125,7 +127,7 @@ const Query = ({
     } finally {
       setLoading(false);
     }
-  }, [id, sId]);
+  }, [id, session.id]);
 
   const keymaps = React.useMemo(() => keymap.of([
     {
@@ -146,7 +148,7 @@ const Query = ({
     },
   ]), [execute]);
 
-  const eventId = React.useMemo(() => [sId, id].join(':'), [sId, id]);
+  const eventId = React.useMemo(() => [session.id, id].join(':'), [session.id, id]);
 
   const onPrime = React.useCallback(q => {
     if (q.trim() === "") {
@@ -155,18 +157,18 @@ const Query = ({
     }
     (async () => {
       try {
-        await Wails.Llm_Prime(dbId, q);
+        await Wails.Llm_Prime(db.id, q);
         setError(false);
       } catch (err) {
         setError(true);
       }
     })();
-  }, [dbId, setError]);
+  }, [db.id, setError]);
 
   const onAutocomplete = React.useCallback((reqId, q) => {
     if (q.trim() === "") return;
-    Wails.Llm_Autocomplete(eventId, reqId, dbId, q);
-  }, [dbId, eventId]);
+    Wails.Llm_Autocomplete(eventId, reqId, db.id, q);
+  }, [db.id, eventId]);
 
   const ref = React.useRef();
   const [editor, onSuggestionAppend] = useCodeMirror({
@@ -225,18 +227,24 @@ const Query = ({
     explainAnalyze(mode, qry);
   }, [qry, editor]);
 
+  const onExport = React.useCallback(async e => {
+    const fn = [db.name, session.title || 'untitled', Math.round(Date.now() / 1000)].join('-');
+    await Wails.Utils_ExportRows(`${fn}.csv`, [res.columns, ...res.rows]);
+    // console.log(db.name, session.title || 'untitled', res);
+  }, [db.name, session.title, res]);
+
   const onDelete = React.useCallback(async e => {
     try {
       await Wails.Cfg_SessionQueriesDelete(id);
       dispatch({
         type: 'SESSION-QUERIES-DELETE',
         id,
-        sId,
+        sId: session.id,
       });
     } catch (err) {
       console.error(err);
     }
-  }, [id, sId]);
+  }, [id, session.id]);
 
   return (
     <div className='flex flex-col space-y-2'>
@@ -273,6 +281,7 @@ const Query = ({
       {view === 'rows' && res !== null && (
         <ResultRows
           onChangeView={setView.bind(null)}
+          onExport={res.error === null ? onExport : null}
           id={id}
           isStale={isResStale}
           isLoading={isLoading}
@@ -284,9 +293,11 @@ const Query = ({
           mode={view}
           onChangeView={setView.bind(null)}
           onLoad={onExplainAnalyze.bind(null, view)}
+          onExport={onExport}
           query={qry}
           isStale={isExplainStale}
           isLoading={isLoading}
+          hasError={res !== null && res.error !== null}
           {...explain}
         />
       )}
@@ -295,9 +306,11 @@ const Query = ({
           mode={view}
           onChangeView={setView.bind(null)}
           onLoad={onExplainAnalyze.bind(null, view)}
+          onExport={onExport}
           query={qry}
           isStale={isAnalyzeStale}
           isLoading={isLoading}
+          hasError={res !== null && res.error !== null}
           {...analyze}
         />
       )}

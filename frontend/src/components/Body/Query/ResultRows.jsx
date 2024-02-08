@@ -34,7 +34,7 @@ const truncateString = str => {
 };
 
 
-const ResultRows = ({onChangeView, id, error = null, numRows = 0, columns = [], rows = [], isStale, isLoading}) => {
+const ResultRows = ({onChangeView, onExport, id, error = null, numRows = 0, columns = [], rows = [], isStale, isLoading}) => {
   const [isActive, setIsActive] = React.useState(false);
   const [state, setState] = React.useState({id, numRows: Math.min(5, rows.length)});
 
@@ -121,7 +121,7 @@ const ResultRows = ({onChangeView, id, error = null, numRows = 0, columns = [], 
             <div>{numRows} rows</div>
           )}
         </div>
-        <Tabs onSelect={onChangeView} active={'rows'} />
+        <Tabs onSelect={onChangeView} onExport={onExport} active={'rows'} hasError={error !== null} />
       </div>
     </div>
   );

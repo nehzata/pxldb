@@ -64,10 +64,8 @@ const Session = () => {
     <div className="flex flex-col space-y-8 overflow-scroll p-4">
       {queries.map((q, i) => (
         <Query
-          dbId={db.id}
-          dsn={db.dsn}
-          schema={db.schema}
-          sId={activeId}
+          db={db}
+          session={session}
           {...q}
           key={i}
         />

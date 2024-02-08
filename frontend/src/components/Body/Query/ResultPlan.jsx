@@ -18,7 +18,7 @@ Planning Time: 0.574 ms
 Execution Time: 50.330 ms
 `;
 
-const ResultPlan = ({mode, onChangeView, onLoad, query, error = null, rows = null, isStale, isLoading}) => {
+const ResultPlan = ({mode, onChangeView, onLoad, onExport, query, error = null, rows = null, isStale, isLoading, hasError}) => {
   const plan = React.useMemo(() => {
     if (rows === null || !rows) {
       return null;
@@ -62,7 +62,7 @@ const ResultPlan = ({mode, onChangeView, onLoad, query, error = null, rows = nul
         )}
       </div>
       <div className='flex flex-row justify-end items-center leading-none text-gray-500 text-sm ml-3'>
-        <Tabs onSelect={onChangeView} active={mode} />
+        <Tabs onSelect={onChangeView} onExport={onExport} active={mode} hasError={hasError} />
       </div>
     </div>
   );

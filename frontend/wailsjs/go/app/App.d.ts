@@ -55,3 +55,5 @@ export function Llm_Prime(arg1:number,arg2:string):Promise<void>;
 export function Llm_SetSchema(arg1:number,arg2:string):Promise<void>;
 
 export function Llm_StatusGet():Promise<boolean>;
+
+export function Utils_ExportRows(arg1:string,arg2:Array<any>):Promise<void>;

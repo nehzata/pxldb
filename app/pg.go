@@ -11,6 +11,8 @@ import (
 	pgxuuid "github.com/jackc/pgx-gofrs-uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/shopspring/decimal"
 )
 
 type DBPg struct {
@@ -152,6 +154,17 @@ func (pg *DBPg) Exec(qry string) Result {
 				str = v.String()
 			case time.Time:
 				str = v.String()
+			case pgtype.Numeric:
+				if !v.Valid {
+					str = "NULL"
+				} else if v.NaN {
+					str = "NaN"
+				} else if v.InfinityModifier != pgtype.Finite {
+					str = "infinity"
+				} else {
+					d := decimal.Decimal(decimal.NewFromBigInt(v.Int, v.Exp))
+					str = d.String()
+				}
 			default:
 				str = fmt.Sprintf("unknown type %T", _v)
 			}
