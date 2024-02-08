@@ -55,6 +55,7 @@ const Body = () => {
                 className='p-1 text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600 hover:rounded-md'
                 style={{'--wails-draggable': 'no-drag'}}
                 onClick={onToggleLeftbar}
+                title='Toggle leftbar'
               >
                 <Icons.LayoutLeft size={20} stroke='currentColor' />
               </button>
@@ -77,6 +78,7 @@ const Body = () => {
               className='ml-6 mr-2 p-1 text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600 hover:rounded-md'
               style={{'--wails-draggable': 'no-drag'}}
               onClick={onToggleRightbar}
+              title='Toggle schema view'
             >
               <Icons.LayoutRight size={20} stroke='currentColor' />
             </button>

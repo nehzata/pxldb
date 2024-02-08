@@ -80,6 +80,7 @@ const Rightbar = () => {
           style={{'--wails-draggable': 'no-drag'}}
           onClick={onRefresh}
           disabled={isRefreshing}
+          title='Refresh schema'
         >
           {isRefreshing && (
             <Icons.RefreshCCW03 size={20} stroke='currentColor' />

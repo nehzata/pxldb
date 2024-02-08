@@ -59,6 +59,7 @@ const Table = ({dsn, sId, name, cols}) => {
         <button
           className='flex-grow flex flex-row justify-start items-center space-x-2 overflow-hidden focus:outline-none mr-2'
           onClick={onToggle}
+          title='Toggle schema view'
         >
           {isExpanded && <Icons.ChevronDown className='flex-shrink-0 text-gray-500' size={16} stroke='currentColor' />}
           {!isExpanded && <Icons.ChevronRight className='flex-shrink-0 text-gray-500' size={16} stroke='currentColor' />}
@@ -69,6 +70,7 @@ const Table = ({dsn, sId, name, cols}) => {
           className='hidden group-hover:block p-1 text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-600 hover:rounded-md focus:outline-none'
           onClick={onTemplate}
           data-template='select'
+          title='Quick select'
         >
           <Icons.SearchSM className='flex-shrink-0' size={16} stroke='currentColor' />
         </button>
@@ -76,6 +78,7 @@ const Table = ({dsn, sId, name, cols}) => {
           className='hidden group-hover:block p-1 text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-600 hover:rounded-md focus:outline-none'
           onClick={onTemplate}
           data-template='insert'
+          title='Quick insert'
         >
           <Icons.Plus className='flex-shrink-0' size={16} stroke='currentColor' />
         </button>
@@ -83,6 +86,7 @@ const Table = ({dsn, sId, name, cols}) => {
           className='hidden group-hover:block p-1 text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-600 hover:rounded-md focus:outline-none'
           onClick={onTemplate}
           data-template='delete'
+          title='Quick delete'
         >
           <Icons.Minus className='flex-shrink-0' size={16} stroke='currentColor' />
         </button>
@@ -90,6 +94,7 @@ const Table = ({dsn, sId, name, cols}) => {
           className='hidden group-hover:block p-1 text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-600 hover:rounded-md focus:outline-none'
           onClick={onTemplate}
           data-template='update'
+          title='Quick update'
         >
           <Icons.Pencil01 className='flex-shrink-0' size={16} stroke='currentColor' />
         </button>

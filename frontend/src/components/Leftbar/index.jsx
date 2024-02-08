@@ -34,6 +34,7 @@ const Leftbar = () => {
           style={{'--wails-draggable': 'no-drag'}}
           onClick={onToggle}
           disabled={false}
+          title='Toggle leftbar'
         >
           <Icons.LayoutLeft size={20} stroke='currentColor' />
         </button>

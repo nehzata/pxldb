@@ -16,18 +16,6 @@ const LlmToggle = () => {
     });
   }, [enabled, dispatch]);
 
-  // const [receivedStr, totalStr] = React.useMemo(() => {
-  //   if (received === null || total === null) return [null, null];
-  //   return [
-  //     byteSize(received).toString(),
-  //     byteSize(total).toString(),
-  //   ];
-  // }, [received, total]);
-
-  // React.useEffect(() => {
-  //   Wails.Llm_Init();
-  // }, []);
-
   const Icon = enabled ? Icons.Zap : Icons.ZapOff;
 
   return (
@@ -35,6 +23,7 @@ const LlmToggle = () => {
       className='p-1 text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-600 hover:rounded-md'
       style={{'--wails-draggable': 'no-drag'}}
       onClick={onToggle}
+      title={enabled ? 'Disable LLM autocomplete' : 'Enable LLM autocomplete'}
     >
       <Icon size={20} stroke='currentColor' />
     </button>

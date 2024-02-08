@@ -47,6 +47,7 @@ const ResultPlan = ({mode, onChangeView, onLoad, query, error = null, rows = nul
               className='absolute top-0 right-0 text-gray-400 p-1'
               onClick={onLoad}
               disabled={isLoading}
+              title='Refresh plan'
             >
               {!isLoading && (
                 <Icons.RefreshCCW01 size={20} stroke='currentColor' />

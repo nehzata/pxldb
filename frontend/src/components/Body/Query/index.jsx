@@ -1,8 +1,8 @@
 import React from 'react';
 import {keymap} from '@codemirror/view';
+import * as Icons from 'untitledui-js-base';
 
 import store from '@pxl/utils/store';
-import * as Icons from 'untitledui-js-base';
 import useCodeMirror from '@pxl/components/Codemirror/useCodeMirror';
 import * as Wails from '@wails/go/app/App';
 import * as Runtime from '@wails/runtime';
@@ -255,6 +255,7 @@ const Query = ({
             type='button'
             className='px-2 py-1 shadow-sm text-white bg-red-500 hover:bg-red-400 focus:outline-none rounded-md'
             onClick={onDelete}
+            title='Delete query'
           >
             <Icons.Trash01 size={16} stroke='currentColor' />
           </button>
@@ -264,6 +265,7 @@ const Query = ({
           className='px-2 py-1 shadow-sm text-white bg-blue-500 hover:bg-blue-400 dark:hover:bg-blue-700 disabled:bg-blue-300 dark:disabled:bg-blue-400 focus:outline-none rounded-md'
           onClick={onExecute}
           disabled={loading}
+          title='Execute query [⌘+Enter]'
         >
           <Icons.Play size={16} stroke='currentColor' />
         </button>
