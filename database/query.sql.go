@@ -156,7 +156,7 @@ func (q *Queries) SessionQueriesDelete(ctx context.Context, id int64) error {
 }
 
 const sessionQueriesGet = `-- name: SessionQueriesGet :many
-SELECT id, qry, res
+SELECT id, qry, res, expln, anlyz
 FROM session_queries
 WHERE
   session_id = ?1 AND
@@ -165,9 +165,11 @@ ORDER BY create_ts
 `
 
 type SessionQueriesGetRow struct {
-	ID  int64
-	Qry string
-	Res sql.NullString
+	ID    int64
+	Qry   string
+	Res   sql.NullString
+	Expln sql.NullString
+	Anlyz sql.NullString
 }
 
 func (q *Queries) SessionQueriesGet(ctx context.Context, sID string) ([]SessionQueriesGetRow, error) {
@@ -179,7 +181,13 @@ func (q *Queries) SessionQueriesGet(ctx context.Context, sID string) ([]SessionQ
 	var items []SessionQueriesGetRow
 	for rows.Next() {
 		var i SessionQueriesGetRow
-		if err := rows.Scan(&i.ID, &i.Qry, &i.Res); err != nil {
+		if err := rows.Scan(
+			&i.ID,
+			&i.Qry,
+			&i.Res,
+			&i.Expln,
+			&i.Anlyz,
+		); err != nil {
 			return nil, err
 		}
 		items = append(items, i)
@@ -212,20 +220,52 @@ func (q *Queries) SessionQueriesInsert(ctx context.Context, arg SessionQueriesIn
 	return id, err
 }
 
-const sessionQueriesUpdate = `-- name: SessionQueriesUpdate :exec
+const sessionQueriesUpdateAnalyze = `-- name: SessionQueriesUpdateAnalyze :exec
+UPDATE session_queries
+SET anlyz = ?1
+WHERE id = ?2
+`
+
+type SessionQueriesUpdateAnalyzeParams struct {
+	Anlyz sql.NullString
+	ID    int64
+}
+
+func (q *Queries) SessionQueriesUpdateAnalyze(ctx context.Context, arg SessionQueriesUpdateAnalyzeParams) error {
+	_, err := q.db.ExecContext(ctx, sessionQueriesUpdateAnalyze, arg.Anlyz, arg.ID)
+	return err
+}
+
+const sessionQueriesUpdateExplain = `-- name: SessionQueriesUpdateExplain :exec
+UPDATE session_queries
+SET expln = ?1
+WHERE id = ?2
+`
+
+type SessionQueriesUpdateExplainParams struct {
+	Expln sql.NullString
+	ID    int64
+}
+
+func (q *Queries) SessionQueriesUpdateExplain(ctx context.Context, arg SessionQueriesUpdateExplainParams) error {
+	_, err := q.db.ExecContext(ctx, sessionQueriesUpdateExplain, arg.Expln, arg.ID)
+	return err
+}
+
+const sessionQueriesUpdateRes = `-- name: SessionQueriesUpdateRes :exec
 UPDATE session_queries
 SET qry = ?1, res = ?2
 WHERE id = ?3
 `
 
-type SessionQueriesUpdateParams struct {
+type SessionQueriesUpdateResParams struct {
 	Qry string
 	Res sql.NullString
 	ID  int64
 }
 
-func (q *Queries) SessionQueriesUpdate(ctx context.Context, arg SessionQueriesUpdateParams) error {
-	_, err := q.db.ExecContext(ctx, sessionQueriesUpdate, arg.Qry, arg.Res, arg.ID)
+func (q *Queries) SessionQueriesUpdateRes(ctx context.Context, arg SessionQueriesUpdateResParams) error {
+	_, err := q.db.ExecContext(ctx, sessionQueriesUpdateRes, arg.Qry, arg.Res, arg.ID)
 	return err
 }
 

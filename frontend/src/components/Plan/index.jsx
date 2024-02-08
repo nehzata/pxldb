@@ -17,7 +17,7 @@ const tabs = [
 ];
 
 const Plan = ({query, plan: planStr}) => {
-  const [state, setState] = React.useState('graph');
+  const [view, setView] = React.useState('graph');
 
   const [rootNode, plan] = React.useMemo(() => {
     try {
@@ -43,12 +43,12 @@ const Plan = ({query, plan: planStr}) => {
         },
       ];
     } catch (e) {
-      return null;
+      return [null, null];
     }
   }, [query, planStr]);
 
   const content = React.useMemo(() => {
-    if (state === 'raw') {
+    if (view === 'raw') {
       return (
         <div className='text-xs'>
           <pre>
@@ -56,7 +56,7 @@ const Plan = ({query, plan: planStr}) => {
           </pre>
         </div>
       );
-    } else if (state === 'graph') {
+    } else if (view === 'graph') {
       return (
         <div className='w-full h-[350px]'>
           <Graph rootNode={rootNode} plan={plan} />
@@ -64,10 +64,12 @@ const Plan = ({query, plan: planStr}) => {
       );
     } else {
       return (
-        <Chart plan={plan} metric={state} />
+        <Chart plan={plan} metric={view} />
       );
     }
-  }, [state, plan]);
+  }, [view, plan]);
+
+  if (plan === null) return null;
 
   return (
     <>
@@ -76,11 +78,11 @@ const Plan = ({query, plan: planStr}) => {
         {tabs.map((t, i) => (
           <button
             type='button'
-            className={state === t
+            className={view === t
               ? 'px-2 py-1 border-b border-black font-semibold'
               : 'px-2 py-1 border-b text-gray-400 border-gray-300'
             }
-            onClick={() => setState(t)}
+            onClick={() => setView(t)}
             key={i}
           >{t}</button>
         ))}

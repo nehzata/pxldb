@@ -1,6 +1,7 @@
 import React from 'react';
 
 import ResultCell from './ResultCell';
+import Tabs from './Tabs';
 
 
 const lengthStr = bytes => {
@@ -32,7 +33,8 @@ const truncateString = str => {
   return [str, `${str.slice(0, 50)}... (${len})`];
 };
 
-const ResultRows = ({id, error = null, numRows = 0, columns = [], rows = [], isStale, isLoading}) => {
+
+const ResultRows = ({onChangeView, id, error = null, numRows = 0, columns = [], rows = [], isStale, isLoading}) => {
   const [isActive, setIsActive] = React.useState(false);
   const [state, setState] = React.useState({id, numRows: Math.min(5, rows.length)});
 
@@ -66,63 +68,62 @@ const ResultRows = ({id, error = null, numRows = 0, columns = [], rows = [], isS
     return rows.slice(0, numRows).map(r => r.map(v => truncateString(v)));
   }, [state, rows]);
 
-  if (error != null) {
-    return (
-      <div>
-        <span className={isStale
-          ? 'border rounded-md shadow-sm p-1 text-sm text-gray-900 bg-gray-100'
-          : 'border rounded-md shadow-sm p-1 text-sm text-gray-900'
-        }>{error}</span>
-      </div>
-    );
-  }
-
   return (
     <div>
       <div className={isStale
-        ? 'inline-block border rounded-md shadow-sm overflow-x-scroll p-1 text-sm text-gray-900 max-w-full bg-gray-100'
-        : 'inline-block border rounded-md shadow-sm overflow-x-scroll p-1 text-sm text-gray-900 max-w-full'
+        ? 'border rounded-l-md rounded-tr-md shadow-sm p-1 overflow-x-scroll text-sm text-gray-900 bg-gray-100'
+        : 'border rounded-l-md rounded-tr-md shadow-sm p-1 overflow-x-scroll text-sm text-gray-900'
       }>
-        <table onMouseMove={onMouseMove} className={isLoading
-          ? 'blur-[2px]'
-          : ''
-        }>
-          {columns.length !== 0 && (
-            <thead>
-              <tr className='border-b border-divider'>
-                {columns.map((c, i) =>
-                  <td className='font-bold px-2' key={i}>{c}</td>
-                )}
-              </tr>
-            </thead>
-          )}
-          <tbody className={isActive ? 'underline hover:cursor-pointer' : ''}>
-            {rows.length === 0 && (
-              <tr>
-                <td colSpan={columns.length}>
-                  ({numRows} rows)
-                </td>
-              </tr>
+        {error !== null && (
+          <span>{error}</span>
+        )}
+        {error === null && (
+          <table onMouseMove={onMouseMove} className={isLoading
+            ? 'w-full blur-[2px]'
+            : 'w-full'
+          }>
+            {columns.length !== 0 && (
+              <thead>
+                <tr className='border-b border-divider'>
+                  {columns.map((c, i) =>
+                    <td className='font-bold px-2' key={i}>{c}</td>
+                  )}
+                </tr>
+              </thead>
             )}
-            {displayRows.map((r, i) =>
-              <tr className='border-b border-divider last:border-none' key={i}>
-                {r.map((v, j) => <ResultCell v={v} isStale={isStale} key={j} />)}
-              </tr>
-            )}
-          </tbody>
-        </table>
+            <tbody className={isActive ? 'underline hover:cursor-pointer' : ''}>
+              {rows.length === 0 && (
+                <tr>
+                  <td colSpan={columns.length}>
+                    ({numRows} rows)
+                  </td>
+                </tr>
+              )}
+              {displayRows.map((r, i) =>
+                <tr className='border-b border-divider last:border-none' key={i}>
+                  {r.map((v, j) => <ResultCell v={v} isStale={isStale} key={j} />)}
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
       </div>
-      {state.numRows !== rows.length && (
-        <button
-          type='button'
-          className='block leading-none text-gray-500 text-sm underline ml-3'
-          onClick={onMore}
-        >more ({rows.length - state.numRows})</button>
-      )}
-      {isStale && rows.length > 0 && numRows !== undefined && state.numRows != numRows && (
-        <div className='block leading-none text-gray-500 text-sm ml-3'>{numRows} rows</div>
-      )}
-    </div >
+      <div className='flex flex-row justify-between items-center leading-none text-gray-500 text-sm ml-3'>
+        <div className='flex flex-row justify-start items-center space-x-2 mt-1'>
+          {state.numRows !== rows.length && (
+            <button
+              type='button'
+              className='underline'
+              onClick={onMore}
+            >more ({rows.length - state.numRows})</button>
+          )}
+          {isStale && rows.length > 0 && numRows !== undefined && state.numRows != numRows && (
+            <div>{numRows} rows</div>
+          )}
+        </div>
+        <Tabs onSelect={onChangeView} active={'rows'} />
+      </div>
+    </div>
   );
 };
 

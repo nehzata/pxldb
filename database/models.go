@@ -43,4 +43,6 @@ type SessionQuery struct {
 	Res       sql.NullString
 	CreateTs  int64
 	DeleteTs  sql.NullInt64
+	Expln     sql.NullString
+	Anlyz     sql.NullString
 }

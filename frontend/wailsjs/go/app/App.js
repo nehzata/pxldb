@@ -42,8 +42,16 @@ export function Cfg_SessionQueriesInsert(arg1, arg2, arg3) {
   return window['go']['app']['App']['Cfg_SessionQueriesInsert'](arg1, arg2, arg3);
 }
 
-export function Cfg_SessionQueriesUpdate(arg1, arg2, arg3) {
-  return window['go']['app']['App']['Cfg_SessionQueriesUpdate'](arg1, arg2, arg3);
+export function Cfg_SessionQueriesUpdateAnalyze(arg1, arg2) {
+  return window['go']['app']['App']['Cfg_SessionQueriesUpdateAnalyze'](arg1, arg2);
+}
+
+export function Cfg_SessionQueriesUpdateExplain(arg1, arg2) {
+  return window['go']['app']['App']['Cfg_SessionQueriesUpdateExplain'](arg1, arg2);
+}
+
+export function Cfg_SessionQueriesUpdateRes(arg1, arg2, arg3) {
+  return window['go']['app']['App']['Cfg_SessionQueriesUpdateRes'](arg1, arg2, arg3);
 }
 
 export function Cfg_SessionsDelete(arg1) {

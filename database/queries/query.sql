@@ -56,7 +56,7 @@ SET title = @title
 WHERE id = @id;
 
 -- name: SessionQueriesGet :many
-SELECT id, qry, res
+SELECT id, qry, res, expln, anlyz
 FROM session_queries
 WHERE
   session_id = @s_id AND
@@ -68,9 +68,19 @@ INSERT INTO session_queries (session_id, qry, res)
 VALUES (@s_id, @qry, @res)
 RETURNING id;
 
--- name: SessionQueriesUpdate :exec
+-- name: SessionQueriesUpdateRes :exec
 UPDATE session_queries
 SET qry = @qry, res = @res
+WHERE id = @id;
+
+-- name: SessionQueriesUpdateExplain :exec
+UPDATE session_queries
+SET expln = @expln
+WHERE id = @id;
+
+-- name: SessionQueriesUpdateAnalyze :exec
+UPDATE session_queries
+SET anlyz = @anlyz
 WHERE id = @id;
 
 -- name: SessionQueriesDelete :exec

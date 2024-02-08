@@ -205,6 +205,8 @@ type SessionQuery struct {
 	ID  int64  `json:"id"`
 	Qry string `json:"qry"`
 	Res any    `json:"res"`
+	Expln any `json:"explain"`
+	Anlyz any `json:"analyze"`
 }
 
 func (a *App) Cfg_GetSessionQueries(sID string) []SessionQuery {
@@ -222,7 +224,12 @@ func (a *App) Cfg_GetSessionQueries(sID string) []SessionQuery {
 		}
 		if q.Res.Valid {
 			json.Unmarshal([]byte(q.Res.String), &tmp.Res)
-			// tmp.Res = &q.Res.String
+		}
+		if q.Expln.Valid {
+			json.Unmarshal([]byte(q.Expln.String), &tmp.Expln)
+		}
+		if q.Anlyz.Valid {
+			json.Unmarshal([]byte(q.Anlyz.String), &tmp.Anlyz)
 		}
 		queries = append(queries, tmp)
 	}
@@ -238,11 +245,25 @@ func (a *App) Cfg_SessionQueriesInsert(sID string, qry string, res string) int64
 	return id
 }
 
-func (a *App) Cfg_SessionQueriesUpdate(id int64, qry string, res string) {
-	a.cfg.SessionQueriesUpdate(context.Background(), database.SessionQueriesUpdateParams{
+func (a *App) Cfg_SessionQueriesUpdateRes(id int64, qry string, res string) {
+	a.cfg.SessionQueriesUpdateRes(context.Background(), database.SessionQueriesUpdateResParams{
 		ID:  id,
 		Qry: qry,
 		Res: sql.NullString{res, true},
+	})
+}
+
+func (a *App) Cfg_SessionQueriesUpdateExplain(id int64, expln string) {
+	a.cfg.SessionQueriesUpdateExplain(context.Background(), database.SessionQueriesUpdateExplainParams{
+		ID:  id,
+		Expln: sql.NullString{expln, true},
+	})
+}
+
+func (a *App) Cfg_SessionQueriesUpdateAnalyze(id int64, anlyz string) {
+	a.cfg.SessionQueriesUpdateAnalyze(context.Background(), database.SessionQueriesUpdateAnalyzeParams{
+		ID:  id,
+		Anlyz: sql.NullString{anlyz, true},
 	})
 }
 

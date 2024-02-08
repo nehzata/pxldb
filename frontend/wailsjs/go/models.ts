@@ -134,6 +134,8 @@ export namespace app {
 	    id: number;
 	    qry: string;
 	    res: any;
+	    explain: any;
+	    analyze: any;
 	
 	    static createFrom(source: any = {}) {
 	        return new SessionQuery(source);
@@ -144,6 +146,8 @@ export namespace app {
 	        this.id = source["id"];
 	        this.qry = source["qry"];
 	        this.res = source["res"];
+	        this.explain = source["explain"];
+	        this.analyze = source["analyze"];
 	    }
 	}
 	

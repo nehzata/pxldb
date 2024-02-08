@@ -22,7 +22,11 @@ export function Cfg_SessionQueriesDelete(arg1:number):Promise<void>;
 
 export function Cfg_SessionQueriesInsert(arg1:string,arg2:string,arg3:string):Promise<number>;
 
-export function Cfg_SessionQueriesUpdate(arg1:number,arg2:string,arg3:string):Promise<void>;
+export function Cfg_SessionQueriesUpdateAnalyze(arg1:number,arg2:string):Promise<void>;
+
+export function Cfg_SessionQueriesUpdateExplain(arg1:number,arg2:string):Promise<void>;
+
+export function Cfg_SessionQueriesUpdateRes(arg1:number,arg2:string,arg3:string):Promise<void>;
 
 export function Cfg_SessionsDelete(arg1:string):Promise<void>;
 

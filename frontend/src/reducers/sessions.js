@@ -42,7 +42,13 @@ export default (state = {index: {}, list: []}, action) => {
         const session = state.list[state.index[sId]];
         const newSession = {
           ...session,
-          queries: queries.map(q => ({...q, isStale: true, isLoading: false})),
+          queries: queries.map(q => ({
+            ...q,
+            isResStale: true,
+            isExplainStale: true,
+            isAnalyzeStale: true,
+            isLoading: false,
+          })),
         };
         return {
           ...state,
@@ -51,16 +57,21 @@ export default (state = {index: {}, list: []}, action) => {
       }
     case 'SESSION-QUERIES-UPDATE':
       {
-        const {sId, id, qry, res} = action;
+        const {sId, id, qry, res, explain, analyze} = action;
         const session = state.list[state.index[sId]];
         const {found, list: newQueries} = session.queries.reduce((acc, q) => {
           if (q.id === id) {
             acc.found = true;
             acc.list.push({
+              ...q,
               id,
               qry,
-              res,
-              isStale: false,
+              res: res !== undefined ? res : q.res,
+              explain: explain !== undefined ? explain : q.explain,
+              analyze: analyze !== undefined ? analyze : q.analyze,
+              isResStale: res !== undefined ? false : q.isResStale,
+              isExplainStale: explain !== undefined ? false : q.isExplainStale,
+              isAnalyzeStale: analyze !== undefined ? false : q.isAnalyzeStale,
             });
           } else {
             acc.list.push(q);
@@ -72,7 +83,11 @@ export default (state = {index: {}, list: []}, action) => {
             id,
             qry,
             res,
-            isStale: false
+            explain,
+            analyze,
+            isResStale: false,
+            isExplainStale: false,
+            isAnalyzeStale: false,
           });
         }
         return {
