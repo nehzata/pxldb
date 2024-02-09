@@ -79,7 +79,7 @@ class grammar_pgsql_expr_dash : public grammar {
                                 new grammar_identifier("<>"),
                                 new grammar_identifier("<="),
                                 new grammar_identifier(">="),
-                                new grammar_regex(std::regex(R"([=*/%&|^~+-])")),
+                                new grammar_regex(R"([=*/%&|^~+-<>])"),
                                 // new grammar_identifier("%"),
                                 // new grammar_identifier("*"),
                                 // new grammar_identifier("+"),
@@ -288,7 +288,7 @@ grammar_result_code grammar_pgsql_expr::eval(uint depth, buffer &b) {
                     new grammar_pgsql_expr_dash()
                 }),
                 new grammar_list({ // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=unary%2Doperator,expr
-                    new grammar_regex(std::regex(R"([~+-])")),  // b2
+                    new grammar_regex(R"([~+-])"),  // b2
                     new grammar_pgsql_expr(),                   // b2
                     new grammar_pgsql_expr_dash()
                 }),
@@ -454,7 +454,7 @@ grammar_pgsql_expr &grammar_pgsql_expr::operator=(const grammar_pgsql_expr &src)
 //         new grammar_pgsql_expr()                                 // a2
 //     }),
 //     new grammar_list({ // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=unary%2Doperator,expr
-//         new grammar_regex(std::regex(R"([~+-])")),  // b2
+//         new grammar_regex(R"([~+-])"),              // b2
 //         new grammar_pgsql_expr()                    // b2
 //     }),
 //     new grammar_list({ // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=bind%2Dparameter-,schema%2Dname,column%2Dname,-unary%2Doperator

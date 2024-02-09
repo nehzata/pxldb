@@ -9,7 +9,7 @@ class grammar_ws : public grammar_max_n {
     virtual ~grammar_ws() {}
     // clang-format off
     grammar_ws() : grammar_max_n(
-        []() { return new grammar_regex(std::regex(R"([\n\t\s])")); },
+        []() { return new grammar_regex(R"([\n\t\s])"); },
         5
     ) {}
     //clang-format on

@@ -4,29 +4,31 @@
 #include <spdlog/spdlog.h>
 
 #include <regex>
+#include <string>
 
 #include "grammar.h"
 
 class grammar_regex : public grammar {
    private:
+    std::string str;
     std::regex r;
 
    public:
     virtual ~grammar_regex() {}
     // clang-format off
-    grammar_regex(std::regex r) : r(r) {}
+    grammar_regex(std::string r) : str(r), r(r) {}
     //clang-format on
 
     virtual grammar_result_code eval(uint depth, buffer &b) override {
       const std::pair<bool, char> v = b.next();
       if (!v.first) {
-        spdlog::debug("{} regex: null", std::string(depth, ' '));
+        spdlog::debug("{} regex: {},null", std::string(depth, ' '), str);
         // return {GRAMMAR_RESULT_ERROR, 0};
         return GRAMMAR_RESULT_ERROR;
       }
 
       const char c = v.second;
-      spdlog::debug("{} regex: {}", std::string(depth, ' '), c);
+      spdlog::debug("{} regex: {},{}", std::string(depth, ' '), str, c);
 
       std::string str({c});
       if (std::regex_search(str, r)) {
