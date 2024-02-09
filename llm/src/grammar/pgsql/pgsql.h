@@ -5,6 +5,7 @@
 #include "grammar/alternatives.h"
 #include "grammar/identifier.h"
 #include "grammar/list.h"
+#include "grammar/max_n.h"
 #include "grammar/one_or_more.h"
 #include "grammar/regex.h"
 #include "grammar/ws.h"
@@ -19,8 +20,8 @@ class grammar_pgsql : public grammar_list {
     grammar_pgsql() : grammar_list({
       new grammar_zero_or_many([]() {
         return new grammar_list({
+          new grammar_zero_or_one(new grammar_max_n([]() { return new grammar_regex(R"([\s\t])"); }, 3)),
           new grammar_identifier("--"),
-          new grammar_zero_or_one(new grammar_regex(R"([\s\t])")),
           new grammar_zero_or_many([]() { return new grammar_regex(R"([^\n])"); }),
           new grammar_one_or_more([]() { return new grammar_regex(R"([\n])"); }),
         });

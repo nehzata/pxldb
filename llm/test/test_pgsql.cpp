@@ -98,21 +98,42 @@ TEST_CASE("pgsql") {
         REQUIRE(run(g, in) == true);
     }
 
-    SECTION("functions") {
+    SECTION("functions 1") {
+        // spdlog::set_level(spdlog::level::debug);
+        grammar_pgsql g;
+        std::string in = "SELECT NOW()";
+        REQUIRE(run(g, in) == true);
+    }
+
+    SECTION("functions 2") {
         // spdlog::set_level(spdlog::level::debug);
         grammar_pgsql g;
         std::string in = "SELECT MAX(last_ts) FROM users";
         REQUIRE(run(g, in) == true);
     }
 
-    SECTION("error 1") {
+    SECTION("functions 3") {
+        // spdlog::set_level(spdlog::level::debug);
+        grammar_pgsql g;
+        std::string in = "SELECT EXTRACT(EPOCH FROM NOW())";
+        REQUIRE(run(g, in) == true);
+    }
+
+    SECTION("functions 4") {
+        // spdlog::set_level(spdlog::level::debug);
+        grammar_pgsql g;
+        std::string in = "SELECT DATE_PART('century', NOW())";
+        REQUIRE(run(g, in) == true);
+    }
+
+    SECTION("incomplete query 1") {
         // spdlog::set_level(spdlog::level::debug);
         grammar_pgsql g;
         std::string in = "SELECT MAX(";
         REQUIRE(run(g, in) != true);
     }
 
-    SECTION("error 2") {
+    SECTION("incomplete query 2") {
         // spdlog::set_level(spdlog::level::debug);
         grammar_pgsql g;
         std::string in =
