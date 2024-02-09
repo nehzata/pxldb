@@ -4,6 +4,7 @@
 
 #include "function.h"
 #include "grammar/alternatives.h"
+#include "grammar/epsilon.h"
 #include "grammar/identifier.h"
 #include "grammar/identifier_ci.h"
 #include "grammar/list.h"
@@ -31,149 +32,148 @@ class grammar_pgsql_expr_dash : public grammar {
         if (!g) {
             // clang-format off
             g = std::unique_ptr<grammar>(
-                new grammar_zero_or_one(
-                    new grammar_alternatives({
-                        new grammar_list({ // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=collation%2Dname-,expr,NOT,-LIKE
-                            new grammar_zero_or_one(       // a1
-                                new grammar_list({
-                                    new grammar_ws(),
-                                    new grammar_identifier_ci("NOT")
-                                })
-                            ),
-                            new grammar_ws(),             // a1
-                            new grammar_alternatives({    // a1
-                                new grammar_list({
-                                    new grammar_alternatives({
-                                        new grammar_identifier_ci("LIKE"),
-                                        new grammar_identifier_ci("ILIKE"),
-                                    }),
-                                    new grammar_ws(),
-                                    new grammar_pgsql_expr(),
-                                    new grammar_zero_or_one(
-                                        new grammar_list({
-                                            new grammar_ws(),
-                                            new grammar_identifier_ci("ESCAPE"),
-                                            new grammar_ws(),
-                                            new grammar_pgsql_expr()
-                                        })
-                                    )
-                                }),
-                                new grammar_list({
-                                    new grammar_alternatives({
-                                        new grammar_identifier_ci("GLOB"),
-                                        new grammar_identifier_ci("REGEXP"),
-                                        new grammar_identifier_ci("MATCH")
-                                    }),
-                                    new grammar_ws(),
-                                    new grammar_pgsql_expr()
-                                })
-                            }),
-                            new grammar_pgsql_expr_dash(),      // S'
-                        }),
-                        new grammar_list({ // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=expr-,expr,expr,-function%2Dname
-                            new grammar_zero_or_one(new grammar_ws()),              // a2
-                            new grammar_alternatives({                              // a2
-                                new grammar_identifier("||"),
-                                new grammar_identifier("&&"),
-                                new grammar_identifier("!="),
-                                new grammar_identifier("<>"),
-                                new grammar_identifier("<="),
-                                new grammar_identifier(">="),
-                                new grammar_regex(R"([=*/%&|^~+-<>])"),
-                                // new grammar_identifier("%"),
-                                // new grammar_identifier("*"),
-                                // new grammar_identifier("+"),
-                                // new grammar_identifier("-"),
-                                // new grammar_identifier("/"),
-                                // new grammar_identifier("|"),
-                                // new grammar_identifier("&"),
-                                // new grammar_identifier("^"),
-                                // new grammar_identifier("~"),
-                                // new grammar_identifier("="),
-                                // new grammar_identifier("<"),
-                                // new grammar_identifier(">"),
-                            }),
-                            new grammar_zero_or_one(new grammar_ws()),              // a2
-                            new grammar_pgsql_expr(),                               // a2
-                            new grammar_pgsql_expr_dash(),                          // S'
-                        }),
-                        new grammar_list({ // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=expr-,expr,expr,-function%2Dname
-                            new grammar_ws(),                                       // a2
-                            new grammar_identifier_ci("OR"),                           // a2
-                            new grammar_ws(),                                       // a2
-                            new grammar_pgsql_expr(),                               // a2
-                            new grammar_pgsql_expr_dash(),                          // S'
-                        }),
-                        new grammar_list({ // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=expr-,expr,expr,-function%2Dname
-                            new grammar_ws(),                                       // a2
-                            new grammar_identifier_ci("AND"),                       // a2
-                            new grammar_ws(),                                       // a2
-                            new grammar_pgsql_expr(),                               // a2
-                            new grammar_pgsql_expr_dash(),                          // S'
-                        }),
-                        new grammar_list({ // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=expr-,ISNULL,-NOTNULL
-                            new grammar_list({                                      // a3
-                                new grammar_ws(),
-                                new grammar_alternatives({
-                                    new grammar_identifier_ci("IS NULL"),
-                                    new grammar_identifier_ci("IS NOT NULL"),
-                                    new grammar_identifier_ci("NOT NULL")
-                                }),
-                            }),
-                            new grammar_pgsql_expr_dash(),                          // S'
-                        }),
-                        new grammar_list({ // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=IN-,(,),-expr
-                            new grammar_zero_or_one(                                // a3
-                                new grammar_list({
-                                    new grammar_ws(),
-                                    new grammar_identifier_ci("NOT")
-                                })
-                            ),
+                new grammar_alternatives({
+                    new grammar_list({ // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=collation%2Dname-,expr,NOT,-LIKE
+                        new grammar_zero_or_one(       // a1
                             new grammar_list({
                                 new grammar_ws(),
-                                new grammar_identifier_ci("IN")
-                            }),
-                            new grammar_ws(),
-                            new grammar_alternatives({                              // a3
-                                new grammar_list({
-                                    new grammar_identifier("("),
-                                    new grammar_pgsql_select(),
-                                    new grammar_identifier(")"),
+                                new grammar_identifier_ci("NOT")
+                            })
+                        ),
+                        new grammar_ws(),             // a1
+                        new grammar_alternatives({    // a1
+                            new grammar_list({
+                                new grammar_alternatives({
+                                    new grammar_identifier_ci("LIKE"),
+                                    new grammar_identifier_ci("ILIKE"),
                                 }),
-                                new grammar_list({
-                                    new grammar_pgsql_expr(),
-                                    new grammar_zero_or_many([]() {
-                                        return new grammar_list({
-                                            new grammar_identifier(","),
-                                            new grammar_zero_or_one(new grammar_ws()),
-                                            new grammar_pgsql_expr()
-                                        });
+                                new grammar_ws(),
+                                new grammar_pgsql_expr(),
+                                new grammar_zero_or_one(
+                                    new grammar_list({
+                                        new grammar_ws(),
+                                        new grammar_identifier_ci("ESCAPE"),
+                                        new grammar_ws(),
+                                        new grammar_pgsql_expr()
                                     })
-                                })
+                                )
                             }),
-                            new grammar_pgsql_expr_dash(),                          // S'
+                            new grammar_list({
+                                new grammar_alternatives({
+                                    new grammar_identifier_ci("GLOB"),
+                                    new grammar_identifier_ci("REGEXP"),
+                                    new grammar_identifier_ci("MATCH")
+                                }),
+                                new grammar_ws(),
+                                new grammar_pgsql_expr()
+                            })
                         }),
-                        new grammar_list({ // :: casting
-                            new grammar_identifier("::"),                           // a4
-                            new grammar_pgsql_keyword(),                            // a4
-                            new grammar_zero_or_one(
-                                new grammar_list({
-                                    new grammar_identifier("("),
-                                    new grammar_pgsql_expr(),
-                                    new grammar_zero_or_many([]() {
-                                        return new grammar_list({
-                                            new grammar_identifier(","),
-                                            new grammar_zero_or_one(new grammar_ws()),
-                                            new grammar_pgsql_expr()
-                                        });
-                                    }),
-                                    new grammar_identifier(")"),
+                        new grammar_pgsql_expr_dash(),      // S'
+                    }),
+                    new grammar_list({ // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=expr-,expr,expr,-function%2Dname
+                        new grammar_zero_or_one(new grammar_ws()),              // a2
+                        new grammar_alternatives({                              // a2
+                            new grammar_identifier("||"),
+                            new grammar_identifier("&&"),
+                            new grammar_identifier("!="),
+                            new grammar_identifier("<>"),
+                            new grammar_identifier("<="),
+                            new grammar_identifier(">="),
+                            new grammar_regex(R"([=*/%&|^~+-<>])"),
+                            // new grammar_identifier("%"),
+                            // new grammar_identifier("*"),
+                            // new grammar_identifier("+"),
+                            // new grammar_identifier("-"),
+                            // new grammar_identifier("/"),
+                            // new grammar_identifier("|"),
+                            // new grammar_identifier("&"),
+                            // new grammar_identifier("^"),
+                            // new grammar_identifier("~"),
+                            // new grammar_identifier("="),
+                            // new grammar_identifier("<"),
+                            // new grammar_identifier(">"),
+                        }),
+                        new grammar_zero_or_one(new grammar_ws()),              // a2
+                        new grammar_pgsql_expr(),                               // a2
+                        new grammar_pgsql_expr_dash(),                          // S'
+                    }),
+                    new grammar_list({ // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=expr-,expr,expr,-function%2Dname
+                        new grammar_ws(),                                       // a2
+                        new grammar_identifier_ci("OR"),                           // a2
+                        new grammar_ws(),                                       // a2
+                        new grammar_pgsql_expr(),                               // a2
+                        new grammar_pgsql_expr_dash(),                          // S'
+                    }),
+                    new grammar_list({ // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=expr-,expr,expr,-function%2Dname
+                        new grammar_ws(),                                       // a2
+                        new grammar_identifier_ci("AND"),                       // a2
+                        new grammar_ws(),                                       // a2
+                        new grammar_pgsql_expr(),                               // a2
+                        new grammar_pgsql_expr_dash(),                          // S'
+                    }),
+                    new grammar_list({ // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=expr-,ISNULL,-NOTNULL
+                        new grammar_list({                                      // a3
+                            new grammar_ws(),
+                            new grammar_alternatives({
+                                new grammar_identifier_ci("IS NULL"),
+                                new grammar_identifier_ci("IS NOT NULL"),
+                                new grammar_identifier_ci("NOT NULL")
+                            }),
+                        }),
+                        new grammar_pgsql_expr_dash(),                          // S'
+                    }),
+                    new grammar_list({ // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=IN-,(,),-expr
+                        new grammar_zero_or_one(                                // a3
+                            new grammar_list({
+                                new grammar_ws(),
+                                new grammar_identifier_ci("NOT")
+                            })
+                        ),
+                        new grammar_list({
+                            new grammar_ws(),
+                            new grammar_identifier_ci("IN")
+                        }),
+                        new grammar_ws(),
+                        new grammar_alternatives({                              // a3
+                            new grammar_list({
+                                new grammar_identifier("("),
+                                new grammar_pgsql_select(),
+                                new grammar_identifier(")"),
+                            }),
+                            new grammar_list({
+                                new grammar_pgsql_expr(),
+                                new grammar_zero_or_many([]() {
+                                    return new grammar_list({
+                                        new grammar_identifier(","),
+                                        new grammar_zero_or_one(new grammar_ws()),
+                                        new grammar_pgsql_expr()
+                                    });
                                 })
-                            ),
-                            new grammar_pgsql_expr_dash(),                          // S'
-                        })
-                    })
-                )
+                            })
+                        }),
+                        new grammar_pgsql_expr_dash(),                          // S'
+                    }),
+                    new grammar_list({ // :: casting
+                        new grammar_identifier("::"),                           // a4
+                        new grammar_pgsql_keyword(),                            // a4
+                        new grammar_zero_or_one(
+                            new grammar_list({
+                                new grammar_identifier("("),
+                                new grammar_pgsql_expr(),
+                                new grammar_zero_or_many([]() {
+                                    return new grammar_list({
+                                        new grammar_identifier(","),
+                                        new grammar_zero_or_one(new grammar_ws()),
+                                        new grammar_pgsql_expr()
+                                    });
+                                }),
+                                new grammar_identifier(")"),
+                            })
+                        ),
+                        new grammar_pgsql_expr_dash(),                          // S'
+                    }),
+                    new grammar_epsilon()
+                })
             );
             // clang-format on
         }
@@ -242,6 +242,64 @@ grammar_result_code grammar_pgsql_expr::eval(uint depth, buffer &b) {
                     new grammar_identifier_ci("END"),
                     new grammar_pgsql_expr_dash()
                 }),
+                new grammar_list({ // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=CAST,)
+                    new grammar_identifier_ci("CAST"),
+                    new grammar_identifier("("),
+                    new grammar_pgsql_expr(),
+                    new grammar_ws(),
+                    new grammar_identifier_ci("AS"),
+                    new grammar_ws(),
+                    new grammar_pgsql_keyword(), // typename
+                    new grammar_identifier(")"),
+                    new grammar_pgsql_expr_dash()
+                }),
+                new grammar_list({
+                    new grammar_identifier_ci("EXTRACT"),
+                    new grammar_identifier("("),
+                    new grammar_pgsql_identifier(),
+                    new grammar_ws(),
+                    new grammar_identifier_ci("FROM"),
+                    new grammar_ws(),
+                    new grammar_pgsql_expr(),
+                    new grammar_identifier(")"),
+                    new grammar_pgsql_expr_dash()
+                }),
+                new grammar_list({
+                    new grammar_identifier_ci("NORMALIZE"),
+                    new grammar_identifier("("),
+                    new grammar_pgsql_expr(),
+                    new grammar_identifier(")"),
+                    new grammar_pgsql_expr_dash()
+                }),
+                new grammar_list({
+                    new grammar_identifier_ci("SUBSTRING"),
+                    new grammar_identifier("("),
+                    new grammar_pgsql_string(),
+                    new grammar_identifier(","),
+                    new grammar_pgsql_number(),
+                    new grammar_identifier(","),
+                    new grammar_pgsql_number(),
+                    new grammar_identifier(")"),
+                    new grammar_pgsql_expr_dash()
+                }),
+                new grammar_list({
+                    new grammar_alternatives({
+                        new grammar_identifier_ci("COALESCE"),
+                        new grammar_identifier_ci("GREATEST"),
+                        new grammar_identifier_ci("LEAST"),
+                    }),
+                    new grammar_identifier("("),
+                    new grammar_pgsql_expr(),
+                    new grammar_zero_or_many([]() {
+                        return new grammar_list({
+                            new grammar_identifier(","),
+                            new grammar_zero_or_one(new grammar_ws()),
+                            new grammar_pgsql_expr()
+                        });
+                    }),
+                    new grammar_identifier(")"),
+                    new grammar_pgsql_expr_dash()
+                }),
                 new grammar_list({ // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=%2C-,NOT,),-CASE
                     new grammar_zero_or_one(
                         new grammar_list({
@@ -261,6 +319,45 @@ grammar_result_code grammar_pgsql_expr::eval(uint depth, buffer &b) {
                     new grammar_pgsql_expr_dash()
                 }),
                 // new grammar_list({ // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=)-,expr,collation%2Dname,-expr
+                // }),
+                new grammar_list({ // b5 // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=expr-,function%2Dname,),-filter%2Dclause
+                    new grammar_pgsql_function_name(),
+                    new grammar_identifier("("),
+                    new grammar_pgsql_function_arguments(),
+                    new grammar_identifier(")"),
+                    // new grammar_zero_or_one(
+                    //     new grammar_list({
+                    //         new grammar_ws(),
+                    //         new grammar_pgsql_filter_clause()
+                    //     })
+                    // ),
+                    // new grammar_zero_or_one(
+                    //     new grammar_list({
+                    //         new grammar_ws(),
+                    //         new grammar_pgsql_over_clause()
+                    //     })
+                    // ),
+                    new grammar_pgsql_expr_dash()
+                }),
+                new grammar_list({ // b2 // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=over%2Dclause-,(,),-%2C
+                    new grammar_identifier("("),
+                    new grammar_pgsql_expr(),
+                    new grammar_zero_or_many([] {
+                        return new grammar_list({
+                            new grammar_identifier(","),
+                            new grammar_zero_or_one(new grammar_ws()),
+                            new grammar_pgsql_expr()
+                        });
+                    }),
+                    new grammar_identifier(")"),
+                    new grammar_pgsql_expr_dash()
+                }),
+                new grammar_list({ // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=unary%2Doperator,expr
+                    new grammar_regex(R"([~+-])"),              // b3
+                    new grammar_pgsql_expr(),                   // b3
+                    new grammar_pgsql_expr_dash()
+                }),
+                // new grammar_list({ // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=function%2Dname,function%2Darguments
                 // }),
                 new grammar_list({ // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=bind%2Dparameter-,schema%2Dname,column%2Dname,-unary%2Doperator
                     new grammar_zero_or_one(                   // b4
@@ -290,78 +387,9 @@ grammar_result_code grammar_pgsql_expr::eval(uint depth, buffer &b) {
                         new grammar_identifier_ci("USER"),
                         new grammar_identifier_ci("CURRENT_CATALOG"),
                         new grammar_identifier_ci("CURRENT_SCHEMA"),
-                        new grammar_list({ // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=CAST,)
-                            new grammar_identifier_ci("CAST"),
-                            new grammar_zero_or_one(new grammar_ws()),
-                            new grammar_identifier("("),
-                            new grammar_pgsql_expr(),
-                            new grammar_ws(),
-                            new grammar_identifier_ci("AS"),
-                            new grammar_ws(),
-                            new grammar_pgsql_keyword(), // typename
-                            new grammar_identifier(")"),
-                        }),
-                        new grammar_list({ //
-                            new grammar_identifier_ci("EXTRACT"),
-                            new grammar_zero_or_one(new grammar_ws()),
-                            new grammar_identifier("("),
-                            new grammar_alternatives({
-                                new grammar_identifier_ci("year"),
-                                new grammar_identifier_ci("month"),
-                                new grammar_identifier_ci("day"),
-                                new grammar_identifier_ci("hour"),
-                                new grammar_identifier_ci("minute"),
-                                new grammar_identifier_ci("second"),
-                                new grammar_pgsql_identifier()
-                            }),
-                            new grammar_ws(),
-                            new grammar_identifier_ci("FROM"),
-                            new grammar_ws(),
-                            new grammar_pgsql_expr(),
-                            new grammar_identifier(")"),
-                        }),
                     }),
                     new grammar_pgsql_expr_dash()
                 }),
-                new grammar_list({ // b2 // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=over%2Dclause-,(,),-%2C
-                    new grammar_identifier("("),
-                    new grammar_pgsql_expr(),
-                    new grammar_zero_or_many([] {
-                        return new grammar_list({
-                            new grammar_identifier(","),
-                            new grammar_zero_or_one(new grammar_ws()),
-                            new grammar_pgsql_expr()
-                        });
-                    }),
-                    new grammar_identifier(")"),
-                    new grammar_pgsql_expr_dash()
-                }),
-                new grammar_list({ // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=unary%2Doperator,expr
-                    new grammar_regex(R"([~+-])"),              // b3
-                    new grammar_pgsql_expr(),                   // b3
-                    new grammar_pgsql_expr_dash()
-                }),
-                new grammar_list({ // b5 // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=expr-,function%2Dname,),-filter%2Dclause
-                    new grammar_pgsql_function_name(),
-                    new grammar_identifier("("),
-                    new grammar_pgsql_function_arguments(),
-                    new grammar_identifier(")"),
-                    // new grammar_zero_or_one(
-                    //     new grammar_list({
-                    //         new grammar_ws(),
-                    //         new grammar_pgsql_filter_clause()
-                    //     })
-                    // ),
-                    // new grammar_zero_or_one(
-                    //     new grammar_list({
-                    //         new grammar_ws(),
-                    //         new grammar_pgsql_over_clause()
-                    //     })
-                    // ),
-                    new grammar_pgsql_expr_dash()
-                }),
-                // new grammar_list({ // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=function%2Dname,function%2Darguments
-                // }),
                 new grammar_list({ // b6 // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=expr%3A-,literal%2Dvalue,-bind%2Dparameter
                     new grammar_pgsql_literal(),
                     new grammar_pgsql_expr_dash()

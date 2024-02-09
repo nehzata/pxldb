@@ -145,5 +145,12 @@ TEST_CASE("pgsql") {
         REQUIRE(run(g, in) != true);
     }
 
+    SECTION("incomplete query 3") {
+        // spdlog::set_level(spdlog::level::debug);
+        grammar_pgsql g;
+        std::string in = "SELECT date_part('hour', now())";
+        REQUIRE(run(g, in) == true);
+    }
+
     spdlog::set_level(spdlog::level::off);
 }
