@@ -120,8 +120,69 @@ class grammar_pgsql_typename : public grammar_list {
             })
           )
         }),
-
       }),
+      new grammar_list({
+        new grammar_identifier_ci("TIMESTAMP("),
+        new grammar_pgsql_number(),
+        new grammar_identifier(")"),
+        new grammar_zero_or_one(
+          new grammar_list({
+            new grammar_ws(),
+            new grammar_alternatives({
+              new grammar_identifier_ci("WITHOUT"),
+              new grammar_identifier_ci("WITH")
+            }),
+            new grammar_ws(),
+            new grammar_identifier_ci("TIME ZONE"),
+          })
+        )
+      }),
+      new grammar_list({
+        new grammar_identifier_ci("TIMESTAMP"),
+        new grammar_zero_or_one(
+          new grammar_list({
+            new grammar_ws(),
+            new grammar_alternatives({
+              new grammar_identifier_ci("WITHOUT"),
+              new grammar_identifier_ci("WITH")
+            }),
+            new grammar_ws(),
+            new grammar_identifier_ci("TIME ZONE"),
+          })
+        )
+      }),
+      new grammar_list({
+        new grammar_identifier_ci("TIME("),
+        new grammar_pgsql_number(),
+        new grammar_identifier(")"),
+        new grammar_zero_or_one(
+          new grammar_list({
+            new grammar_ws(),
+            new grammar_alternatives({
+              new grammar_identifier_ci("WITHOUT"),
+              new grammar_identifier_ci("WITH")
+            }),
+            new grammar_ws(),
+            new grammar_identifier_ci("TIME ZONE"),
+          })
+        )
+      }),
+      new grammar_list({
+        new grammar_identifier_ci("TIME"),
+        new grammar_zero_or_one(
+          new grammar_list({
+            new grammar_ws(),
+            new grammar_alternatives({
+              new grammar_identifier_ci("WITHOUT"),
+              new grammar_identifier_ci("WITH")
+            }),
+            new grammar_ws(),
+            new grammar_identifier_ci("TIME ZONE"),
+          })
+        )
+      }),
+      // interval types
+      // json types
       new grammar_zero_or_one(new grammar_pgsql_array())
     }) {}
     // clang-format on
