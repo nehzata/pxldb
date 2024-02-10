@@ -208,6 +208,7 @@ const Query = ({
 
   const onFocus = React.useCallback(() => {
     QuickCopy.subscribe(quickCopy);
+    dispatch({type: 'TABS-OPEN', id: session.id});
   }, [quickCopy]);
 
   const onBlur = React.useCallback(() => {
