@@ -46,7 +46,7 @@ help:
 test: bin/test libcatch2 $(SRC_OBJ) $(TEST_OBJ)
 	$(OUTDIR)/test
 
-bin/test: libcatch2 $(SRC_OBJ) $(TEST_OBJ)
+bin/test: libllama libcatch2 $(SRC_OBJ) $(TEST_OBJ)
 	mkdir -p $(OUTDIR)
 	$(CXX) \
 		-I third_party/Catch2/src -I third_party/Catch2/build/generated-includes \
