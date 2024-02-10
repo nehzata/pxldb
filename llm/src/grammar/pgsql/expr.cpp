@@ -2,6 +2,7 @@
 
 #include <regex>
 
+#include "column_name.h"
 #include "function.h"
 #include "grammar/alternatives.h"
 #include "grammar/epsilon.h"
@@ -17,6 +18,7 @@
 #include "keyword.h"
 #include "literal.h"
 #include "select.h"
+#include "typename.h"
 
 // https://iitd.github.io/col728/lec/parsing.html#:~:text=Left%20Recursion%20%3A%20the%20main%20problem%20with%20Recursive%20Descent%20Parsing
 // https://www.reddit.com/r/ProgrammingLanguages/comments/w27u4w/comment/igscu61/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
@@ -79,19 +81,7 @@ class grammar_pgsql_expr_dash : public grammar {
                             new grammar_identifier("<>"),
                             new grammar_identifier("<="),
                             new grammar_identifier(">="),
-                            new grammar_regex(R"([=*/%&|^~+-<>])"),
-                            // new grammar_identifier("%"),
-                            // new grammar_identifier("*"),
-                            // new grammar_identifier("+"),
-                            // new grammar_identifier("-"),
-                            // new grammar_identifier("/"),
-                            // new grammar_identifier("|"),
-                            // new grammar_identifier("&"),
-                            // new grammar_identifier("^"),
-                            // new grammar_identifier("~"),
-                            // new grammar_identifier("="),
-                            // new grammar_identifier("<"),
-                            // new grammar_identifier(">"),
+                            new grammar_regex(R"([=*/%&|^~><+-])"),
                         }),
                         new grammar_zero_or_one(new grammar_ws()),              // a2
                         new grammar_pgsql_expr(),                               // a2
@@ -155,7 +145,7 @@ class grammar_pgsql_expr_dash : public grammar {
                     }),
                     new grammar_list({ // :: casting
                         new grammar_identifier("::"),                           // a4
-                        new grammar_pgsql_keyword(),                            // a4
+                        new grammar_pgsql_typename(),                           // a4
                         new grammar_zero_or_one(
                             new grammar_list({
                                 new grammar_identifier("("),
@@ -249,7 +239,8 @@ grammar_result_code grammar_pgsql_expr::eval(uint depth, buffer &b) {
                     new grammar_ws(),
                     new grammar_identifier_ci("AS"),
                     new grammar_ws(),
-                    new grammar_pgsql_keyword(), // typename
+                    new grammar_pgsql_typename(),
+                    // new grammar_pgsql_keyword(), // typename
                     new grammar_identifier(")"),
                     new grammar_pgsql_expr_dash()
                 }),
@@ -360,13 +351,14 @@ grammar_result_code grammar_pgsql_expr::eval(uint depth, buffer &b) {
                 // new grammar_list({ // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=function%2Dname,function%2Darguments
                 // }),
                 new grammar_list({ // https://www.sqlite.org/syntaxdiagrams.html#expr:~:text=bind%2Dparameter-,schema%2Dname,column%2Dname,-unary%2Doperator
-                    new grammar_zero_or_one(                   // b4
+                    new grammar_alternatives({
                         new grammar_list({
-                            new grammar_pgsql_identifier(),
-                            new grammar_identifier(".")
-                        })
-                    ),
-                    new grammar_pgsql_identifier(),
+                            new grammar_pgsql_table_name(),
+                            new grammar_identifier("."),
+                            new grammar_pgsql_column_label(),
+                        }),
+                        new grammar_pgsql_column_id(),
+                    }),
                     new grammar_pgsql_expr_dash()
                 }),
                 new grammar_list({

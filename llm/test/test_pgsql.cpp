@@ -126,6 +126,13 @@ TEST_CASE("pgsql") {
         REQUIRE(run(g, in) == true);
     }
 
+    SECTION("functions 5") {
+        // spdlog::set_level(spdlog::level::debug);
+        grammar_pgsql g;
+        std::string in = "SELECT DATE_PART('epoch'::text, NOW())";
+        REQUIRE(run(g, in) == true);
+    }
+
     SECTION("incomplete query 1") {
         // spdlog::set_level(spdlog::level::debug);
         grammar_pgsql g;
