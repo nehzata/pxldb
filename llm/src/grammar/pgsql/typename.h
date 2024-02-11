@@ -31,95 +31,93 @@ class grammar_pgsql_array : public grammar_alternatives {
     }
 };
 
-class grammar_pgsql_typename : public grammar_list {
+class grammar_pgsql_typename : public grammar_alternatives {
    public:
     virtual ~grammar_pgsql_typename() {}
     // clang-format off
-    grammar_pgsql_typename() : grammar_list({
-      new grammar_alternatives({
-        new grammar_list({
-          new grammar_pgsql_function_name(),
-          new grammar_zero_or_one(
-            new grammar_list({
-              new grammar_identifier("("),
-              new grammar_zero_or_one(
-                new grammar_list({
-                  new grammar_pgsql_expr(),
-                  new grammar_zero_or_many([]() {
-                    return new grammar_list({
-                      new grammar_identifier(","),
-                      new grammar_zero_or_one(new grammar_ws()),
-                      new grammar_pgsql_expr()
-                    });
-                  })
+    grammar_pgsql_typename() : grammar_alternatives({
+      new grammar_list({
+        new grammar_pgsql_function_name(),
+        new grammar_zero_or_one(
+          new grammar_list({
+            new grammar_identifier("("),
+            new grammar_zero_or_one(
+              new grammar_list({
+                new grammar_pgsql_expr(),
+                new grammar_zero_or_many([]() {
+                  return new grammar_list({
+                    new grammar_identifier(","),
+                    new grammar_zero_or_one(new grammar_ws()),
+                    new grammar_pgsql_expr()
+                  });
                 })
-              ),
-              new grammar_identifier(")")
-            })
-          )
-        }),
-        new grammar_identifier_ci("INTEGER"),
-        new grammar_identifier_ci("INT"),
-        new grammar_identifier_ci("SMALLINT"),
-        new grammar_identifier_ci("BIGINT"),
-        new grammar_identifier_ci("REAL"),
-        new grammar_identifier_ci("FLOAT"),
-        new grammar_identifier_ci("DOUBLE PRECISION"),
-        new grammar_identifier_ci("DECIMAL"),
-        new grammar_identifier_ci("DEC"),
-        new grammar_identifier_ci("NUMERIC"),
-        new grammar_identifier_ci("BOOLEAN"),
-        new grammar_list({
-          new grammar_identifier_ci("BIT"),
-          new grammar_zero_or_one(
-            new grammar_list({
-              new grammar_ws(),
-              new grammar_identifier_ci("VARYING"),
-            })
-          ),
-          new grammar_zero_or_one(
-            new grammar_list({
-              new grammar_identifier("("),
-              new grammar_zero_or_one(
-                new grammar_list({
-                  new grammar_pgsql_expr(),
-                  new grammar_zero_or_many([]() {
-                    return new grammar_list({
-                      new grammar_identifier(","),
-                      new grammar_zero_or_one(new grammar_ws()),
-                      new grammar_pgsql_expr()
-                    });
-                  })
+              })
+            ),
+            new grammar_identifier(")")
+          })
+        )
+      }),
+      new grammar_identifier_ci("INTEGER"),
+      new grammar_identifier_ci("INT"),
+      new grammar_identifier_ci("SMALLINT"),
+      new grammar_identifier_ci("BIGINT"),
+      new grammar_identifier_ci("REAL"),
+      new grammar_identifier_ci("FLOAT"),
+      new grammar_identifier_ci("DOUBLE PRECISION"),
+      new grammar_identifier_ci("DECIMAL"),
+      new grammar_identifier_ci("DEC"),
+      new grammar_identifier_ci("NUMERIC"),
+      new grammar_identifier_ci("BOOLEAN"),
+      new grammar_list({
+        new grammar_identifier_ci("BIT"),
+        new grammar_zero_or_one(
+          new grammar_list({
+            new grammar_ws(),
+            new grammar_identifier_ci("VARYING"),
+          })
+        ),
+        new grammar_zero_or_one(
+          new grammar_list({
+            new grammar_identifier("("),
+            new grammar_zero_or_one(
+              new grammar_list({
+                new grammar_pgsql_expr(),
+                new grammar_zero_or_many([]() {
+                  return new grammar_list({
+                    new grammar_identifier(","),
+                    new grammar_zero_or_one(new grammar_ws()),
+                    new grammar_pgsql_expr()
+                  });
                 })
-              ),
-              new grammar_identifier(")")
-            })
-          )
-        }),
-        new grammar_list({
-          new grammar_alternatives({
-            new grammar_list({
-              new grammar_alternatives({
-                new grammar_identifier_ci("CHARACTER"),
-                new grammar_identifier_ci("CHAR"),
-              }),
-              new grammar_zero_or_one(
-                new grammar_list({
-                  new grammar_ws(),
-                  new grammar_identifier_ci("VARYING"),
-                })
-              ),
+              })
+            ),
+            new grammar_identifier(")")
+          })
+        )
+      }),
+      new grammar_list({
+        new grammar_alternatives({
+          new grammar_list({
+            new grammar_alternatives({
+              new grammar_identifier_ci("CHARACTER"),
+              new grammar_identifier_ci("CHAR"),
             }),
-            new grammar_identifier_ci("VARCHAR"),
+            new grammar_zero_or_one(
+              new grammar_list({
+                new grammar_ws(),
+                new grammar_identifier_ci("VARYING"),
+              })
+            ),
           }),
-          new grammar_zero_or_one(
-            new grammar_list({
-              new grammar_identifier("("),
-              new grammar_pgsql_number(),
-              new grammar_identifier(")")
-            })
-          )
+          new grammar_identifier_ci("VARCHAR"),
         }),
+        new grammar_zero_or_one(
+          new grammar_list({
+            new grammar_identifier("("),
+            new grammar_pgsql_number(),
+            new grammar_identifier(")")
+          })
+        )
       }),
       new grammar_list({
         new grammar_identifier_ci("TIMESTAMP("),

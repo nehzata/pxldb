@@ -240,7 +240,6 @@ grammar_result_code grammar_pgsql_expr::eval(uint depth, buffer &b) {
                     new grammar_identifier_ci("AS"),
                     new grammar_ws(),
                     new grammar_pgsql_typename(),
-                    // new grammar_pgsql_keyword(), // typename
                     new grammar_identifier(")"),
                     new grammar_pgsql_expr_dash()
                 }),

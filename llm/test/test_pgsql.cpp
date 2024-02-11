@@ -76,6 +76,13 @@ TEST_CASE("pgsql") {
         REQUIRE(run(g, in) != true);
     }
 
+    SECTION("expr in column result") {
+        // spdlog::set_level(spdlog::level::debug);
+        grammar_pgsql g;
+        std::string in = "SELECT DATE_PART('epoch', NOW())::INTEGER AS ts;";
+        REQUIRE(run(g, in) == true);
+    }
+
     SECTION("join") {
         // spdlog::set_level(spdlog::level::debug);
         grammar_pgsql g;
