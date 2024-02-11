@@ -10,8 +10,8 @@ import (
 	uuid "github.com/gofrs/uuid/v5"
 	pgxuuid "github.com/jackc/pgx-gofrs-uuid"
 	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/shopspring/decimal"
 )
 
@@ -148,6 +148,8 @@ func (pg *DBPg) Exec(qry string) Result {
 				}
 			case int, int8, int16, int32, int64:
 				str = fmt.Sprintf("%d", v)
+			case float32, float64:
+				str = fmt.Sprintf("%f", v)
 			case []byte:
 				str = hex.EncodeToString(v)
 			case uuid.UUID:
