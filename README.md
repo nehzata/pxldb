@@ -36,18 +36,21 @@ xcrun notarytool store-credentials "notarytool-password" --apple-id <APPLE_ID_EM
 ```
 
 ## TODO
-- <s>rename sessions</s>
 - fuzzy search
 - anonymous usage tracking
-- <s>autocomplete integration</s>
+- self update
+- plan / explain view improvements
+  - failed query plan causes error
+- sqlite
+- mysql
 - grammar updates
-  - <s>case insensitive</s>
   - type casts
   - range & between expressions
   - function expressions
   - update grammar
   - insert grammar
   - delete grammar
+  - <s>case insensitive</s>
+- <s>rename sessions</s>
 - <s>download model on first run</s>
-- plan / explain view improvements
-  - failed query plan causes error
+- <s>autocomplete integration</s>
