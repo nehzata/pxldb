@@ -2,10 +2,9 @@
 
 ## About
 
-This is the official Wails React template.
+PXLDB is a python notebook like PostgreSQL viewer.
+![image](https://github.com/user-attachments/assets/4cc4d082-0f2b-41b6-b7cf-edde6e17c6de)
 
-You can configure the project by editing `wails.json`. More information about the project settings can be found
-here: https://wails.io/docs/reference/project-config
 
 ## Getting started
 
